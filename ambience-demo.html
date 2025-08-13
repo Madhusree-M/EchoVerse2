@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Ambience Demo - EchoVerse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-purple-400 via-amber-300 to-purple-400 bg-clip-text text-transparent">
+            Background Ambience Feature Demo
+        </h1>
+        
+        <div class="max-w-4xl mx-auto space-y-8">
+            <!-- Explanation -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">What is Background Ambience?</h2>
+                <p class="text-purple-200 mb-4">
+                    Background ambience adds atmospheric sound effects that play underneath the main narration 
+                    to enhance the listening experience. It's like adding a movie soundtrack to your audiobook!
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Available Ambiences:</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3 p-3 bg-slate-700/50 rounded">
+                                <span class="text-2xl">🌧️</span>
+                                <div>
+                                    <div class="text-white font-medium">Rain</div>
+                                    <div class="text-purple-300 text-sm">Perfect for mystery, drama, or cozy stories</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-slate-700/50 rounded">
+                                <span class="text-2xl">🔥</span>
+                                <div>
+                                    <div class="text-white font-medium">Fireplace</div>
+                                    <div class="text-purple-300 text-sm">Great for Christmas stories, romance, or comfort tales</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-slate-700/50 rounded">
+                                <span class="text-2xl">🌲</span>
+                                <div>
+                                    <div class="text-white font-medium">Forest</div>
+                                    <div class="text-purple-300 text-sm">Ideal for adventure, fantasy, or nature stories</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-slate-700/50 rounded">
+                                <span class="text-2xl">🚀</span>
+                                <div>
+                                    <div class="text-white font-medium">Sci-Fi</div>
+                                    <div class="text-purple-300 text-sm">Perfect for science fiction and futuristic tales</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">How It Works:</h3>
+                        <div class="space-y-3 text-purple-200">
+                            <div class="flex items-start gap-2">
+                                <span class="text-amber-400 font-bold">1.</span>
+                                <span>Select your desired ambience from the dropdown</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <span class="text-amber-400 font-bold">2.</span>
+                                <span>Adjust the volume slider (0-100%)</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <span class="text-amber-400 font-bold">3.</span>
+                                <span>The ambience plays continuously in the background</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <span class="text-amber-400 font-bold">4.</span>
+                                <span>Your narration plays on top at full volume</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Demo -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">Try It Yourself</h2>
+                
+                <div class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-white font-medium mb-2">Choose Ambience:</label>
+                            <select id="ambienceSelect" class="w-full p-3 bg-slate-700 border border-purple-500/30 rounded text-white">
+                                <option value="none">None</option>
+                                <option value="rain">🌧️ Rain</option>
+                                <option value="fireplace">🔥 Fireplace</option>
+                                <option value="forest">🌲 Forest</option>
+                                <option value="scifi">🚀 Sci-Fi</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-white font-medium mb-2">Volume: <span id="volumeDisplay">50</span>%</label>
+                            <input type="range" id="volumeSlider" min="0" max="100" value="50" 
+                                   class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        <button id="playBtn" class="bg-gradient-to-r from-purple-600 to-amber-500 hover:from-purple-700 hover:to-amber-600 text-white px-6 py-3 rounded-lg font-semibold">
+                            ▶️ Play Demo Story
+                        </button>
+                        <button id="stopBtn" class="bg-slate-600 hover:bg-slate-700 text-white px-6 py-3 rounded-lg font-semibold">
+                            ⏹️ Stop
+                        </button>
+                    </div>
+                    
+                    <div id="status" class="text-purple-200 text-sm"></div>
+                </div>
+            </section>
+
+            <!-- Example Combinations -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">Perfect Combinations</h2>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-slate-700/50 rounded-lg">
+                        <h3 class="text-white font-semibold mb-2">🎭 Horror Stories</h3>
+                        <p class="text-purple-200 text-sm mb-2">The Tell-Tale Heart + Rain ambience</p>
+                        <div class="text-amber-300 text-xs">Creates a dark, ominous atmosphere</div>
+                    </div>
+                    
+                    <div class="p-4 bg-slate-700/50 rounded-lg">
+                        <h3 class="text-white font-semibold mb-2">🎄 Christmas Stories</h3>
+                        <p class="text-purple-200 text-sm mb-2">The Gift of the Magi + Fireplace ambience</p>
+                        <div class="text-amber-300 text-xs">Adds warmth and coziness</div>
+                    </div>
+                    
+                    <div class="p-4 bg-slate-700/50 rounded-lg">
+                        <h3 class="text-white font-semibold mb-2">🌟 Adventure Tales</h3>
+                        <p class="text-purple-200 text-sm mb-2">Fantasy stories + Forest ambience</p>
+                        <div class="text-amber-300 text-xs">Brings outdoor adventures to life</div>
+                    </div>
+                    
+                    <div class="p-4 bg-slate-700/50 rounded-lg">
+                        <h3 class="text-white font-semibold mb-2">🚀 Future Fiction</h3>
+                        <p class="text-purple-200 text-sm mb-2">Sci-fi stories + Sci-Fi ambience</p>
+                        <div class="text-amber-300 text-xs">Creates futuristic atmosphere</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        let currentAmbience = null;
+        let currentSpeech = null;
+        
+        const ambienceSelect = document.getElementById('ambienceSelect');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeDisplay = document.getElementById('volumeDisplay');
+        const playBtn = document.getElementById('playBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const status = document.getElementById('status');
+        
+        // Update volume display
+        volumeSlider.addEventListener('input', () => {
+            volumeDisplay.textContent = volumeSlider.value;
+            if (currentAmbience) {
+                updateAmbienceVolume();
+            }
+        });
+        
+        // Generate more natural ambience sounds using Web Audio API
+        function createAmbience(type, volume) {
+            if (!window.AudioContext) return null;
+
+            const audioContext = new AudioContext();
+            const vol = (volume / 100) * 0.1; // Keep ambience quiet
+            let nodes = [];
+
+            switch(type) {
+                case 'rain':
+                    // Create white noise for natural rain sound
+                    const bufferSize = audioContext.sampleRate * 2;
+                    const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+                    const output = noiseBuffer.getChannelData(0);
+
+                    // Generate white noise
+                    for (let i = 0; i < bufferSize; i++) {
+                        output[i] = Math.random() * 2 - 1;
+                    }
+
+                    const whiteNoise = audioContext.createBufferSource();
+                    whiteNoise.buffer = noiseBuffer;
+                    whiteNoise.loop = true;
+
+                    // Filter for rain-like sound
+                    const rainFilter = audioContext.createBiquadFilter();
+                    rainFilter.type = 'lowpass';
+                    rainFilter.frequency.setValueAtTime(1000, audioContext.currentTime);
+
+                    const rainGain = audioContext.createGain();
+                    rainGain.gain.setValueAtTime(vol, audioContext.currentTime);
+
+                    whiteNoise.connect(rainFilter);
+                    rainFilter.connect(rainGain);
+                    rainGain.connect(audioContext.destination);
+
+                    whiteNoise.start();
+                    nodes.push(whiteNoise);
+                    break;
+
+                case 'fireplace':
+                    // Create crackling fire with multiple oscillators
+                    for (let i = 0; i < 3; i++) {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+
+                        oscillator.type = 'sawtooth';
+                        oscillator.frequency.setValueAtTime(50 + Math.random() * 100, audioContext.currentTime);
+                        gainNode.gain.setValueAtTime(vol * 0.3, audioContext.currentTime);
+
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        oscillator.start();
+
+                        nodes.push(oscillator);
+                    }
+                    break;
+
+                case 'forest':
+                    // Create layered forest sounds
+                    const birdOsc = audioContext.createOscillator();
+                    const windOsc = audioContext.createOscillator();
+                    const birdGain = audioContext.createGain();
+                    const windGain = audioContext.createGain();
+
+                    birdOsc.type = 'sine';
+                    birdOsc.frequency.setValueAtTime(800, audioContext.currentTime);
+                    birdGain.gain.setValueAtTime(vol * 0.2, audioContext.currentTime);
+
+                    windOsc.type = 'sawtooth';
+                    windOsc.frequency.setValueAtTime(200, audioContext.currentTime);
+                    windGain.gain.setValueAtTime(vol * 0.1, audioContext.currentTime);
+
+                    birdOsc.connect(birdGain);
+                    windOsc.connect(windGain);
+                    birdGain.connect(audioContext.destination);
+                    windGain.connect(audioContext.destination);
+
+                    birdOsc.start();
+                    windOsc.start();
+
+                    nodes.push(birdOsc, windOsc);
+                    break;
+
+                case 'scifi':
+                    const scifiOsc = audioContext.createOscillator();
+                    const scifiGain = audioContext.createGain();
+                    const scifiFilter = audioContext.createBiquadFilter();
+
+                    scifiOsc.type = 'triangle';
+                    scifiOsc.frequency.setValueAtTime(150, audioContext.currentTime);
+                    scifiFilter.type = 'lowpass';
+                    scifiFilter.frequency.setValueAtTime(300, audioContext.currentTime);
+                    scifiGain.gain.setValueAtTime(vol * 0.5, audioContext.currentTime);
+
+                    scifiOsc.connect(scifiFilter);
+                    scifiFilter.connect(scifiGain);
+                    scifiGain.connect(audioContext.destination);
+                    scifiOsc.start();
+
+                    nodes.push(scifiOsc);
+                    break;
+            }
+
+            return { nodes, audioContext };
+        }
+        
+        function updateAmbienceVolume() {
+            // Volume updates would need to be implemented per node type
+            // For simplicity in demo, restart ambience with new volume
+            if (currentAmbience) {
+                stopDemo();
+                const selectedAmbience = ambienceSelect.value;
+                if (selectedAmbience !== 'none') {
+                    currentAmbience = createAmbience(selectedAmbience, parseInt(volumeSlider.value));
+                }
+            }
+        }
+        
+        function playDemo() {
+            stopDemo(); // Stop any current playback
+            
+            const selectedAmbience = ambienceSelect.value;
+            const volume = parseInt(volumeSlider.value);
+            
+            // Start ambience if selected
+            if (selectedAmbience !== 'none') {
+                currentAmbience = createAmbience(selectedAmbience, volume);
+                status.textContent = `🎵 Playing ${selectedAmbience} ambience at ${volume}% volume...`;
+            }
+            
+            // Start speech
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(
+                    "This is a demo of the background ambience feature. Notice how the atmospheric sounds enhance the storytelling experience."
+                );
+                utterance.rate = 1.0;
+                utterance.onend = () => {
+                    status.textContent += " ✅ Demo complete!";
+                };
+                speechSynthesis.speak(utterance);
+                currentSpeech = utterance;
+                
+                if (selectedAmbience === 'none') {
+                    status.textContent = "🎤 Playing speech without ambience...";
+                } else {
+                    status.textContent += " 🎤 Speech playing over ambience...";
+                }
+            } else {
+                status.textContent = "❌ Speech synthesis not supported in your browser";
+            }
+        }
+        
+        function stopDemo() {
+            // Stop ambience
+            if (currentAmbience) {
+                currentAmbience.nodes.forEach(node => {
+                    try {
+                        if (node && typeof node.stop === 'function') {
+                            node.stop();
+                        }
+                    } catch (e) {
+                        console.log('Error stopping node:', e);
+                    }
+                });
+
+                // Close audio context safely
+                try {
+                    if (currentAmbience.audioContext &&
+                        currentAmbience.audioContext.state !== 'closed' &&
+                        typeof currentAmbience.audioContext.close === 'function') {
+                        currentAmbience.audioContext.close();
+                    }
+                } catch (e) {
+                    console.log('Error closing audio context:', e);
+                }
+
+                currentAmbience = null;
+            }
+
+            // Stop speech
+            if (currentSpeech) {
+                speechSynthesis.cancel();
+                currentSpeech = null;
+            }
+
+            status.textContent = "⏹️ Stopped";
+        }
+        
+        playBtn.addEventListener('click', playDemo);
+        stopBtn.addEventListener('click', stopDemo);
+    </script>
+</body>
+</html>

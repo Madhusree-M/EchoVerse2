@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar Component Demo - EchoVerse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for avatar component */
+        .avatar {
+            position: relative;
+            display: flex;
+            height: 2rem;
+            width: 2rem;
+            flex-shrink: 0;
+            overflow: hidden;
+            border-radius: 9999px;
+        }
+        
+        .avatar-image {
+            aspect-ratio: 1 / 1;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .avatar-fallback {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            background-color: #6b7280;
+            color: white;
+            font-size: 0.875rem;
+        }
+        
+        .avatar-lg {
+            height: 3rem;
+            width: 3rem;
+        }
+        
+        .avatar-xl {
+            height: 4rem;
+            width: 4rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-purple-400 via-amber-300 to-purple-400 bg-clip-text text-transparent">
+            Avatar Component Demo
+        </h1>
+        
+        <div class="max-w-4xl mx-auto space-y-8">
+            <!-- Basic Avatar Examples -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">Basic Avatar Examples</h2>
+                <div class="flex items-center gap-4 flex-wrap">
+                    <!-- Avatar with image -->
+                    <div class="avatar">
+                        <img src="https://github.com/shadcn.png" alt="User" class="avatar-image" />
+                    </div>
+                    
+                    <!-- Avatar with fallback -->
+                    <div class="avatar">
+                        <div class="avatar-fallback bg-purple-600">
+                            JD
+                        </div>
+                    </div>
+                    
+                    <!-- Avatar with broken image (shows fallback) -->
+                    <div class="avatar">
+                        <img src="broken-image.jpg" alt="User" class="avatar-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="avatar-fallback bg-amber-500" style="display: none;">
+                            AB
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Different Sizes -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">Different Sizes</h2>
+                <div class="flex items-center gap-4 flex-wrap">
+                    <!-- Small -->
+                    <div class="avatar">
+                        <img src="https://github.com/vercel.png" alt="Small" class="avatar-image" />
+                    </div>
+                    
+                    <!-- Medium (default) -->
+                    <div class="avatar avatar-lg">
+                        <img src="https://github.com/vercel.png" alt="Medium" class="avatar-image" />
+                    </div>
+                    
+                    <!-- Large -->
+                    <div class="avatar avatar-xl">
+                        <img src="https://github.com/vercel.png" alt="Large" class="avatar-image" />
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Profile Section (like in your app) -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">User Profile Section</h2>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="avatar avatar-lg">
+                            <img src="/placeholder-user.jpg" alt="User" class="avatar-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                            <div class="avatar-fallback bg-purple-600" style="display: none;">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-semibold">Welcome back!</h3>
+                            <p class="text-purple-200 text-sm">Ready to create your next audiobook?</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-purple-200 text-sm">Recent listeners:</span>
+                        <div class="flex -space-x-2">
+                            <div class="avatar border-2 border-slate-800">
+                                <img src="https://github.com/shadcn.png" alt="User 1" class="avatar-image" />
+                            </div>
+                            <div class="avatar border-2 border-slate-800">
+                                <img src="https://github.com/vercel.png" alt="User 2" class="avatar-image" />
+                            </div>
+                            <div class="avatar border-2 border-slate-800">
+                                <div class="avatar-fallback bg-blue-500 text-xs">
+                                    U3
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Story Cards with Author Avatars -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">Story Cards with Author Avatars</h2>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <!-- Story Card 1 -->
+                    <div class="bg-slate-700/50 rounded-lg p-4 hover:bg-slate-700/70 transition-all">
+                        <h3 class="text-white text-lg font-semibold mb-2">The Tell-Tale Heart</h3>
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="avatar" style="height: 1.5rem; width: 1.5rem;">
+                                <img src="https://api.dicebear.com/7.x/initials/svg?seed=Edgar Allan Poe" alt="Edgar Allan Poe" class="avatar-image" />
+                            </div>
+                            <span class="text-purple-300 text-sm">by Edgar Allan Poe</span>
+                        </div>
+                        <p class="text-purple-200 text-sm">A haunting tale of guilt and madness</p>
+                    </div>
+                    
+                    <!-- Story Card 2 -->
+                    <div class="bg-slate-700/50 rounded-lg p-4 hover:bg-slate-700/70 transition-all">
+                        <h3 class="text-white text-lg font-semibold mb-2">The Gift of the Magi</h3>
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="avatar" style="height: 1.5rem; width: 1.5rem;">
+                                <div class="avatar-fallback bg-amber-500 text-xs">
+                                    OH
+                                </div>
+                            </div>
+                            <span class="text-purple-300 text-sm">by O. Henry</span>
+                        </div>
+                        <p class="text-purple-200 text-sm">A heartwarming Christmas story of love and sacrifice</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Code Examples -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">How to Use in React</h2>
+                <div class="bg-slate-900 rounded-lg p-4 overflow-x-auto">
+                    <pre class="text-green-400 text-sm"><code>import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+
+// Basic usage
+&lt;Avatar&gt;
+  &lt;AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" /&gt;
+  &lt;AvatarFallback&gt;CN&lt;/AvatarFallback&gt;
+&lt;/Avatar&gt;
+
+// With custom size
+&lt;Avatar className="h-12 w-12"&gt;
+  &lt;AvatarImage src="/user.jpg" alt="User" /&gt;
+  &lt;AvatarFallback className="bg-purple-600 text-white"&gt;
+    &lt;User className="h-6 w-6" /&gt;
+  &lt;/AvatarFallback&gt;
+&lt;/Avatar&gt;</code></pre>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

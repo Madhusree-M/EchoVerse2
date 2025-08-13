@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoVerse New Features Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-purple-400 via-amber-300 to-purple-400 bg-clip-text text-transparent">
+            🎉 EchoVerse New Features
+        </h1>
+        
+        <div class="max-w-6xl mx-auto space-y-8">
+            <!-- Feature 1: Reading Mode with Synchronized Text Highlighting -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300 flex items-center gap-2">
+                    📖 Reading Mode with Synchronized Text Highlighting
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">✨ Key Features:</h3>
+                        <ul class="space-y-2 text-purple-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Real-time highlighting:</strong> Words are highlighted as they're spoken</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Speed control:</strong> Adjust reading speed from 0.5x to 2x</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Font size control:</strong> Customize text size for comfort</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Progress tracking:</strong> Visual progress bar and word count</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Skip controls:</strong> Jump forward/backward by 10 words</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2">How it works:</h3>
+                        <div class="space-y-2 text-sm text-purple-200">
+                            <p>1. Click "Reading Mode" on any story card</p>
+                            <p>2. Full-screen reading interface opens</p>
+                            <p>3. Text is highlighted word-by-word as it's read aloud</p>
+                            <p>4. Control playback speed, volume, and font size</p>
+                            <p>5. Track progress with visual indicators</p>
+                        </div>
+                        
+                        <div class="mt-4 p-3 bg-slate-600/50 rounded text-xs">
+                            <p class="text-amber-300 font-medium">Demo Text Highlighting:</p>
+                            <p class="mt-1">
+                                <span class="text-purple-300">The</span>
+                                <span class="text-purple-300">quick</span>
+                                <span class="bg-purple-500/30 text-purple-100 px-1 rounded">brown</span>
+                                <span class="text-white">fox</span>
+                                <span class="text-white">jumps</span>
+                                <span class="text-white">over</span>
+                                <span class="text-white">the</span>
+                                <span class="text-white">lazy</span>
+                                <span class="text-white">dog</span>
+                            </p>
+                            <p class="text-purple-400 text-xs mt-1">↑ Current word highlighted, previous words dimmed</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Feature 2: Save Books/Stories -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300 flex items-center gap-2">
+                    ❤️ Save Books/Stories
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">✨ Key Features:</h3>
+                        <ul class="space-y-2 text-purple-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>One-click saving:</strong> Heart icon on every story card</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Persistent storage:</strong> Saved stories persist across sessions</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Quick access:</strong> Dedicated saved stories section</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Visual feedback:</strong> Filled heart for saved stories</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Easy removal:</strong> Click heart again to unsave</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2">Story Card Actions:</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-2 bg-slate-600/50 rounded">
+                                <span class="text-sm text-purple-200">The Tell-Tale Heart</span>
+                                <div class="flex gap-2">
+                                    <button class="text-red-400 hover:text-red-300">
+                                        <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                        </svg>
+                                    </button>
+                                    <button class="text-gray-400 hover:text-white">⋮</button>
+                                    <button class="bg-purple-600 text-white px-2 py-1 rounded text-xs">Play</button>
+                                </div>
+                            </div>
+                            <p class="text-xs text-purple-400">↑ Heart icon saves/unsaves stories</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Feature 3: Organize into Playlists -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300 flex items-center gap-2">
+                    🎵 Organize into Playlists
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">✨ Key Features:</h3>
+                        <ul class="space-y-2 text-purple-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Pre-made playlists:</strong> Bedtime, Travel, Study</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Custom playlists:</strong> Create your own with custom names & icons</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Smart organization:</strong> Add stories to multiple playlists</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Playlist stats:</strong> Story count and total duration</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Visual previews:</strong> Author avatars for quick identification</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2">Default Playlists:</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 p-2 bg-slate-600/50 rounded">
+                                <span class="text-2xl">🌙</span>
+                                <div>
+                                    <div class="text-white font-medium">Bedtime Stories</div>
+                                    <div class="text-purple-300 text-xs">Calm and soothing stories for peaceful sleep</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-2 bg-slate-600/50 rounded">
+                                <span class="text-2xl">✈️</span>
+                                <div>
+                                    <div class="text-white font-medium">Travel Companions</div>
+                                    <div class="text-purple-300 text-xs">Perfect stories for your journeys</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-2 bg-slate-600/50 rounded">
+                                <span class="text-2xl">🎓</span>
+                                <div>
+                                    <div class="text-white font-medium">Study Break</div>
+                                    <div class="text-purple-300 text-xs">Short stories for study breaks</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation & User Experience -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300 flex items-center gap-2">
+                    🧭 Enhanced Navigation & User Experience
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2 flex items-center gap-2">
+                            <span class="text-purple-400">🎤</span>
+                            Generator Tab
+                        </h3>
+                        <p class="text-purple-200 text-sm">Create new audiobooks from text input with voice and emotion controls</p>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2 flex items-center gap-2">
+                            <span class="text-purple-400">📚</span>
+                            Library Tab
+                        </h3>
+                        <p class="text-purple-200 text-sm">Browse featured stories with enhanced save and reading mode options</p>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2 flex items-center gap-2">
+                            <span class="text-purple-400">🎵</span>
+                            Playlists Tab
+                        </h3>
+                        <p class="text-purple-200 text-sm">Manage saved stories and organize them into custom playlists</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How to Use -->
+            <section class="bg-green-900/20 border border-green-500/30 rounded-lg p-6">
+                <h2 class="text-2xl font-semibold mb-4 text-green-300">🚀 How to Use These Features</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Getting Started:</h3>
+                        <ol class="space-y-2 text-green-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">1.</span>
+                                <span>Navigate using the tabs: Generator, Library, or Playlists</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">2.</span>
+                                <span>In Library: Click the heart icon to save stories you like</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">3.</span>
+                                <span>Use the ⋮ menu for Reading Mode or Add to Playlist</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">4.</span>
+                                <span>In Playlists: Create custom playlists and organize your stories</span>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Pro Tips:</h3>
+                        <ul class="space-y-2 text-green-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400">💡</span>
+                                <span>Use Reading Mode for a distraction-free experience</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400">💡</span>
+                                <span>Create themed playlists like "Horror Stories" or "Classics"</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400">💡</span>
+                                <span>Adjust reading speed in Reading Mode for optimal comprehension</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400">💡</span>
+                                <span>All your data is saved locally - no account required!</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
