@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Default Story Images</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-center">Generate Default Story Images</h1>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Generated Images -->
+            <div class="space-y-6">
+                <h2 class="text-xl font-semibold mb-4">Generated Images</h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-slate-800 rounded-lg p-4">
+                        <h3 class="text-white font-medium mb-2">The Tell-Tale Heart</h3>
+                        <canvas id="horror-canvas" width="300" height="400" class="border border-red-500/30 rounded"></canvas>
+                        <button onclick="downloadImage('horror-canvas', 'tell-tale-heart.png')" class="mt-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm">
+                            Download
+                        </button>
+                    </div>
+                    
+                    <div class="bg-slate-800 rounded-lg p-4">
+                        <h3 class="text-white font-medium mb-2">The Gift of the Magi</h3>
+                        <canvas id="christmas-canvas" width="300" height="400" class="border border-green-500/30 rounded"></canvas>
+                        <button onclick="downloadImage('christmas-canvas', 'gift-of-magi.png')" class="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">
+                            Download
+                        </button>
+                    </div>
+                    
+                    <div class="bg-slate-800 rounded-lg p-4">
+                        <h3 class="text-white font-medium mb-2">The Yellow Wallpaper</h3>
+                        <canvas id="psychological-canvas" width="300" height="400" class="border border-yellow-500/30 rounded"></canvas>
+                        <button onclick="downloadImage('psychological-canvas', 'yellow-wallpaper.png')" class="mt-2 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded text-sm">
+                            Download
+                        </button>
+                    </div>
+                    
+                    <div class="bg-slate-800 rounded-lg p-4">
+                        <h3 class="text-white font-medium mb-2">A Good Man Is Hard to Find</h3>
+                        <canvas id="southern-canvas" width="300" height="400" class="border border-orange-500/30 rounded"></canvas>
+                        <button onclick="downloadImage('southern-canvas', 'good-man-hard-to-find.png')" class="mt-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded text-sm">
+                            Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controls -->}
+            <div class="space-y-6">
+                <h2 class="text-xl font-semibold mb-4">Generation Controls</h2>
+                
+                <div class="bg-slate-800 rounded-lg p-4">
+                    <button onclick="generateAllImages()" class="w-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded font-semibold mb-4">
+                        Generate All Images
+                    </button>
+                    
+                    <div class="space-y-2 text-sm text-purple-200">
+                        <p><strong>The Tell-Tale Heart:</strong> Gothic horror with dark red/black gradient, eye symbol</p>
+                        <p><strong>Gift of the Magi:</strong> Christmas theme with green/red gradient, gift symbol</p>
+                        <p><strong>Yellow Wallpaper:</strong> Psychological thriller with yellow/brown gradient, pattern</p>
+                        <p><strong>Good Man Hard to Find:</strong> Southern Gothic with earth tones, cross symbol</p>
+                    </div>
+                </div>
+                
+                <div class="bg-slate-800 rounded-lg p-4">
+                    <h3 class="text-white font-medium mb-2">Instructions:</h3>
+                    <ol class="text-sm text-purple-200 space-y-1">
+                        <li>1. Click "Generate All Images"</li>
+                        <li>2. Download each image using the buttons</li>
+                        <li>3. Save them to the /public folder</li>
+                        <li>4. Update the story data with new paths</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateBookCover(canvasId, title, author, theme) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Create gradient based on theme
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            
+            switch(theme) {
+                case 'horror':
+                    gradient.addColorStop(0, '#8b0000'); // Dark red
+                    gradient.addColorStop(0.5, '#4a0000');
+                    gradient.addColorStop(1, '#000000'); // Black
+                    break;
+                case 'christmas':
+                    gradient.addColorStop(0, '#228b22'); // Forest green
+                    gradient.addColorStop(0.5, '#006400');
+                    gradient.addColorStop(1, '#8b0000'); // Christmas red
+                    break;
+                case 'psychological':
+                    gradient.addColorStop(0, '#ffd700'); // Gold
+                    gradient.addColorStop(0.5, '#daa520');
+                    gradient.addColorStop(1, '#8b4513'); // Saddle brown
+                    break;
+                case 'southern':
+                    gradient.addColorStop(0, '#cd853f'); // Peru
+                    gradient.addColorStop(0.5, '#8b4513');
+                    gradient.addColorStop(1, '#2f4f4f'); // Dark slate gray
+                    break;
+            }
+            
+            // Fill background
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Add texture overlay
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            for (let i = 0; i < 50; i++) {
+                ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 2, 2);
+            }
+            
+            // Add title
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = '#000000';
+            ctx.shadowBlur = 4;
+            ctx.font = 'bold 24px serif';
+            ctx.textAlign = 'center';
+            
+            // Wrap title text
+            const words = title.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            
+            for (let i = 1; i < words.length; i++) {
+                const testLine = currentLine + ' ' + words[i];
+                const metrics = ctx.measureText(testLine);
+                if (metrics.width > canvas.width - 40) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            lines.push(currentLine);
+            
+            // Draw title lines
+            const startY = 80;
+            lines.forEach((line, index) => {
+                ctx.fillText(line, canvas.width / 2, startY + (index * 35));
+            });
+            
+            // Add author
+            ctx.font = '18px serif';
+            ctx.fillStyle = '#cccccc';
+            ctx.fillText(`by ${author}`, canvas.width / 2, canvas.height - 60);
+            
+            // Add thematic symbol
+            ctx.font = 'bold 48px serif';
+            ctx.fillStyle = '#ffffff';
+            const centerY = canvas.height / 2 + 20;
+            
+            switch(theme) {
+                case 'horror':
+                    ctx.fillText('👁', canvas.width / 2, centerY);
+                    break;
+                case 'christmas':
+                    ctx.fillText('🎁', canvas.width / 2, centerY);
+                    break;
+                case 'psychological':
+                    // Draw wallpaper pattern
+                    ctx.font = '24px serif';
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                    for (let i = 0; i < 5; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            ctx.fillText('❋', 50 + (i * 50), 200 + (j * 40));
+                        }
+                    }
+                    break;
+                case 'southern':
+                    ctx.fillText('✝', canvas.width / 2, centerY);
+                    break;
+            }
+            
+            // Add border
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+            
+            // Add inner border
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+        }
+        
+        function generateAllImages() {
+            generateBookCover('horror-canvas', 'The Tell-Tale Heart', 'Edgar Allan Poe', 'horror');
+            generateBookCover('christmas-canvas', 'The Gift of the Magi', 'O. Henry', 'christmas');
+            generateBookCover('psychological-canvas', 'The Yellow Wallpaper', 'Charlotte Perkins Gilman', 'psychological');
+            generateBookCover('southern-canvas', 'A Good Man Is Hard to Find', 'Flannery O\'Connor', 'southern');
+        }
+        
+        function downloadImage(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Auto-generate on page load
+        window.addEventListener('load', () => {
+            setTimeout(generateAllImages, 500);
+        });
+    </script>
+</body>
+</html>

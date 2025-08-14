@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoVerse Automatic Image Generation Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-purple-400 via-amber-300 to-purple-400 bg-clip-text text-transparent">
+            🤖 Automatic Story Image Generation
+        </h1>
+        
+        <div class="max-w-6xl mx-auto space-y-8">
+            <!-- Feature Overview -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300 flex items-center gap-2">
+                    ⚡ Automatic Image Generation
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">🎯 How It Works:</h3>
+                        <ul class="space-y-2 text-purple-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Instant generation:</strong> Images created automatically when stories load</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Smart analysis:</strong> AI analyzes story content for relevant imagery</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Style matching:</strong> Art style automatically chosen based on genre</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Seamless integration:</strong> Images appear in story cards and modals</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Fallback system:</strong> Always generates something, even offline</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2">Automatic Triggers:</h3>
+                        <div class="space-y-2 text-sm text-purple-200">
+                            <p><strong>📚 Story Cards:</strong> Images generate when component mounts</p>
+                            <p><strong>🎭 Story Modals:</strong> Images generate when modal opens</p>
+                            <p><strong>🎤 Text Generator:</strong> Images generate when creating audiobook</p>
+                            <p><strong>⚡ Real-time:</strong> No user interaction required</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Automatic Style Detection -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">🧠 Smart Style Detection</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Content Analysis:</h3>
+                        <div class="space-y-3">
+                            <div class="bg-slate-700/50 rounded p-3">
+                                <h4 class="text-red-400 font-medium">🎭 Horror Detection</h4>
+                                <p class="text-purple-200 text-sm">Keywords: horror, fear, terror, mad → Gothic style</p>
+                                <div class="text-xs text-gray-400 mt-1">Example: "The Tell-Tale Heart" → Dark, mysterious imagery</div>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3">
+                                <h4 class="text-pink-400 font-medium">💕 Romance Detection</h4>
+                                <p class="text-purple-200 text-sm">Keywords: love, romance, heart → Watercolor style</p>
+                                <div class="text-xs text-gray-400 mt-1">Example: Love stories → Soft, elegant colors</div>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3">
+                                <h4 class="text-green-400 font-medium">🎄 Holiday Detection</h4>
+                                <p class="text-purple-200 text-sm">Keywords: christmas, gift, holiday → Artistic style</p>
+                                <div class="text-xs text-gray-400 mt-1">Example: "Gift of the Magi" → Warm, festive imagery</div>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3">
+                                <h4 class="text-blue-400 font-medium">📚 Classic Detection</h4>
+                                <p class="text-purple-200 text-sm">Authors: Poe, Dickens, etc. → Vintage style</p>
+                                <div class="text-xs text-gray-400 mt-1">Example: Classic literature → Aged paper texture</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Generated Examples:</h3>
+                        <div class="space-y-3">
+                            <div class="bg-slate-700/50 rounded p-3 flex items-center gap-3">
+                                <div class="w-12 h-16 bg-gradient-to-b from-red-900 to-black rounded border"></div>
+                                <div>
+                                    <h4 class="text-white font-medium">Horror Story</h4>
+                                    <p class="text-purple-200 text-sm">Dark gradients, gothic elements</p>
+                                </div>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3 flex items-center gap-3">
+                                <div class="w-12 h-16 bg-gradient-to-b from-pink-600 to-purple-700 rounded border"></div>
+                                <div>
+                                    <h4 class="text-white font-medium">Romance Story</h4>
+                                    <p class="text-purple-200 text-sm">Soft colors, heart symbols</p>
+                                </div>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3 flex items-center gap-3">
+                                <div class="w-12 h-16 bg-gradient-to-b from-green-700 to-red-800 rounded border"></div>
+                                <div>
+                                    <h4 class="text-white font-medium">Christmas Story</h4>
+                                    <p class="text-purple-200 text-sm">Festive colors, warm tones</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technical Implementation -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">⚙️ Technical Implementation</h2>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2 flex items-center gap-2">
+                            <span class="text-blue-400">🤖</span>
+                            AI Generation
+                        </h3>
+                        <ul class="text-purple-200 text-sm space-y-1">
+                            <li>• Pollinations AI API</li>
+                            <li>• Dynamic prompt generation</li>
+                            <li>• Content-based styling</li>
+                            <li>• Real-time processing</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2 flex items-center gap-2">
+                            <span class="text-amber-400">🎨</span>
+                            Procedural Fallback
+                        </h3>
+                        <ul class="text-purple-200 text-sm space-y-1">
+                            <li>• HTML5 Canvas API</li>
+                            <li>• Dynamic gradients</li>
+                            <li>• Symbolic elements</li>
+                            <li>• Offline capability</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2 flex items-center gap-2">
+                            <span class="text-green-400">⚡</span>
+                            Performance
+                        </h3>
+                        <ul class="text-purple-200 text-sm space-y-1">
+                            <li>• Async generation</li>
+                            <li>• Loading states</li>
+                            <li>• Error handling</li>
+                            <li>• Graceful degradation</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Experience -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">✨ Enhanced User Experience</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Visual Feedback:</h3>
+                        <div class="space-y-3">
+                            <div class="bg-slate-700/50 rounded p-3 flex items-center gap-3">
+                                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-400"></div>
+                                <span class="text-purple-200">Loading animation while generating</span>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3 flex items-center gap-3">
+                                <div class="w-6 h-6 bg-purple-600 rounded flex items-center justify-center">
+                                    <span class="text-white text-xs">📷</span>
+                                </div>
+                                <span class="text-purple-200">Placeholder icon when no image</span>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3 flex items-center gap-3">
+                                <div class="w-6 h-6 bg-green-600 rounded flex items-center justify-center">
+                                    <span class="text-white text-xs">✓</span>
+                                </div>
+                                <span class="text-purple-200">Smooth transition when image loads</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Integration Points:</h3>
+                        <div class="space-y-2 text-purple-200 text-sm">
+                            <p><strong>📚 Story Cards:</strong> Images appear as story thumbnails</p>
+                            <p><strong>🎭 Story Modals:</strong> Images show in header alongside title</p>
+                            <p><strong>🎤 Generator:</strong> Images appear above audio player</p>
+                            <p><strong>📖 Reading Mode:</strong> Images enhance the reading experience</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How to Experience It -->
+            <section class="bg-green-900/20 border border-green-500/30 rounded-lg p-6">
+                <h2 class="text-2xl font-semibold mb-4 text-green-300">🚀 Experience Automatic Image Generation</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">📚 In the Library:</h3>
+                        <ol class="space-y-2 text-green-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">1.</span>
+                                <span>Go to the Library tab</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">2.</span>
+                                <span>Watch story cards automatically generate images</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">3.</span>
+                                <span>Click "Listen Now" to see images in modals</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">4.</span>
+                                <span>Notice how each story gets a unique, themed image</span>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">🎤 In the Generator:</h3>
+                        <ol class="space-y-2 text-green-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">1.</span>
+                                <span>Enter your story text</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">2.</span>
+                                <span>Click "Generate Audiobook"</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">3.</span>
+                                <span>Watch as an image is automatically created</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">4.</span>
+                                <span>See how the image matches your story's theme</span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-green-900/30 rounded-lg">
+                    <h3 class="text-green-300 font-semibold mb-2">💡 What to Expect:</h3>
+                    <ul class="space-y-1 text-green-200 text-sm">
+                        <li>• Images appear within 2-5 seconds of loading</li>
+                        <li>• Each story gets a unique, contextually relevant image</li>
+                        <li>• Horror stories get dark, gothic imagery</li>
+                        <li>• Romance stories get soft, elegant visuals</li>
+                        <li>• Classic literature gets vintage-style covers</li>
+                        <li>• System works even without internet connection</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

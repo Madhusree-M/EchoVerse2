@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -14,9 +14,13 @@ import { StoryCard } from "@/components/story-card"
 import { StoryModal } from "@/components/story-modal"
 import { ReadingMode } from "@/components/reading-mode"
 import { PlaylistManager } from "@/components/playlist-manager"
+import { ImageGenerator } from "@/components/image-generator"
+import { StoryAvatar } from "@/components/story-avatar"
+import { TextComparison } from "@/components/text-comparison"
+import { rewriteTextWithTone, type ToneType, type RewriteResult } from "@/lib/text-rewriter"
 import { FileUpload } from "@/components/file-upload"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { Play, Mic, Volume2, User, BookOpen, Music } from "lucide-react"
+import { Play, Mic, Volume2, User, BookOpen, Music, Image as ImageIcon } from "lucide-react"
 
 const publicDomainStories = [
   {
@@ -25,7 +29,7 @@ const publicDomainStories = [
     author: "Edgar Allan Poe",
     description: "A haunting tale of guilt and madness",
     duration: "12 min",
-    image: "/gothic-horror-book-cover-dark.png",
+    image: "/tell-tale-heart.svg",
     text: "True! nervous, very, very dreadfully nervous I had been and am; but why will you say that I am mad? The disease had sharpened my senses, not destroyed, not dulled them. Above all was the sense of hearing acute. I heard all things in the heaven and in the earth. I heard many things in hell. How then am I mad? Hearken! and observe how healthily, how calmly, I can tell you the whole story. It is impossible to say how first the idea entered my brain, but, once conceived, it haunted me day and night. Object there was none. Passion there was none. I loved the old man. He had never wronged me. He had never given me insult. For his gold I had no desire. I think it was his eye! Yes, it was this! One of his eyes resembled that of a vulture—a pale blue eye with a film over it. Whenever it fell upon me my blood ran cold, and so by degrees, very gradually, I made up my mind to take the life of the old man, and thus rid myself of the eye for ever."
   },
   {
@@ -34,7 +38,7 @@ const publicDomainStories = [
     author: "O. Henry",
     description: "A heartwarming Christmas story of love and sacrifice",
     duration: "8 min",
-    image: "/christmas-story-book-cover-warm.png",
+    image: "/gift-of-magi.svg",
     text: "One dollar and eighty-seven cents. That was all. And sixty cents of it was in pennies. Pennies saved one and two at a time by bulldozing the grocer and the vegetable man and the butcher until one's cheeks burned with the silent imputation of parsimony that such close dealing implied. Three times Della counted it. One dollar and eighty-seven cents. And the next day would be Christmas. There was clearly nothing to do but flop down on the shabby little couch and howl. So Della did it. Which instigates the moral reflection that life is made up of sobs, sniffles, and smiles, with sniffles predominating. While the mistress of the home is gradually subsiding from the first stage to the second, take a look at the home. A furnished flat at $8 per week. It did not exactly beggar description, but it certainly had that word on the lookout for the mendicancy squad."
   },
   {
@@ -43,7 +47,7 @@ const publicDomainStories = [
     author: "Charlotte Perkins Gilman",
     description: "A psychological thriller about confinement",
     duration: "15 min",
-    image: "/placeholder-vvapa.png",
+    image: "/yellow-wallpaper.svg",
     text: "It is very seldom that mere ordinary people like John and myself secure ancestral halls for the summer. A colonial mansion, a hereditary estate, I would say a haunted house, and reach the height of romantic felicity—but that would be asking too much of fate! Still I will proudly declare that there is something queer about it. Else, why should it be let so cheaply? And why have stood so long untenanted? John laughs at me, of course, but one expects that in marriage. John is practical in the extreme. He has no patience with faith, an intense horror of superstition, and he scoffs openly at any talk of things not to be felt and seen and put down in figures. John is a physician, and perhaps—I would not say it to a living soul, of course, but this is dead paper and a great relief to my mind—perhaps that is one reason I do not get well faster."
   },
   {
@@ -52,7 +56,7 @@ const publicDomainStories = [
     author: "Flannery O'Connor",
     description: "A Southern Gothic tale of family and fate",
     duration: "18 min",
-    image: "/placeholder-962y8.png",
+    image: "/good-man-hard-to-find.svg",
     text: "The grandmother didn't want to go to Florida. She wanted to visit some of her connections in east Tennessee and she was seizing at every chance to change Bailey's mind. Bailey was the son she lived with, her only boy. He was sitting on the edge of his chair at the table, bent over the orange sports section of the Journal. 'Now look here, Bailey,' she said, 'see here, read this,' and she stood with one hand on her thin hip and the other rattling the newspaper at his bald head. 'Here this fellow that calls himself The Misfit is aloose from the Federal Pen and headed toward Florida and you read here what it says he did to these people. Just you read it. I wouldn't take my children in any direction with a criminal like that aloose in it. I couldn't answer to my conscience if I did.'"
   },
 ]
@@ -61,9 +65,11 @@ export default function EchoVerse() {
   const [text, setText] = useState("")
   const [voice, setVoice] = useState("")
   const [emotion, setEmotion] = useState("")
+  const [tone, setTone] = useState<ToneType>('neutral')
   const [ambience, setAmbience] = useState("")
   const [ambienceVolume, setAmbienceVolume] = useState([50])
   const [isGenerating, setIsGenerating] = useState(false)
+  const [isRewriting, setIsRewriting] = useState(false)
   const [audioUrl, setAudioUrl] = useState("")
   const [currentStory, setCurrentStory] = useState<typeof publicDomainStories[0] | null>(null)
   const [isStoryModalOpen, setIsStoryModalOpen] = useState(false)
@@ -71,7 +77,111 @@ export default function EchoVerse() {
   const [readingModeStory, setReadingModeStory] = useState<typeof publicDomainStories[0] | null>(null)
   const [savedStories, setSavedStories] = useState<typeof publicDomainStories>([])
   const [activeTab, setActiveTab] = useState<'generator' | 'library' | 'playlists'>('generator')
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null)
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false)
+  const [rewriteResult, setRewriteResult] = useState<RewriteResult | null>(null)
+  const [useRewrittenText, setUseRewrittenText] = useState(false)
+  const [playlists, setPlaylists] = useState<Array<{
+    id: string
+    name: string
+    description: string
+    stories: typeof publicDomainStories
+    createdAt: string
+  }>>([])
+  const [pendingStoryForPlaylist, setPendingStoryForPlaylist] = useState<typeof publicDomainStories[0] | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Load playlists and saved stories from localStorage on mount
+  useEffect(() => {
+    const savedPlaylists = localStorage.getItem("echoverse-playlists")
+    const savedStoriesData = localStorage.getItem("echoverse-saved-stories")
+
+    // Load saved stories
+    if (savedStoriesData) {
+      try {
+        const parsedStories = JSON.parse(savedStoriesData)
+        setSavedStories(parsedStories)
+      } catch (error) {
+        console.error("Error loading saved stories:", error)
+      }
+    }
+
+    // Load playlists
+    if (savedPlaylists) {
+      try {
+        const parsedPlaylists = JSON.parse(savedPlaylists)
+        setPlaylists(parsedPlaylists)
+      } catch (error) {
+        console.error("Error loading playlists:", error)
+        // Initialize with default playlists if loading fails
+        setPlaylists([
+          {
+            id: "bedtime",
+            name: "Bedtime Stories",
+            description: "Calm and soothing stories for peaceful sleep",
+            stories: [],
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: "travel",
+            name: "Travel Companions",
+            description: "Perfect stories for your journeys",
+            stories: [],
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: "study",
+            name: "Study Break",
+            description: "Short stories for study breaks",
+            stories: [],
+            createdAt: new Date().toISOString()
+          }
+        ])
+      }
+    } else {
+      // Initialize with default playlists
+      setPlaylists([
+        {
+          id: "bedtime",
+          name: "Bedtime Stories",
+          description: "Calm and soothing stories for peaceful sleep",
+          stories: [],
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: "travel",
+          name: "Travel Companions",
+          description: "Perfect stories for your journeys",
+          stories: [],
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: "study",
+          name: "Study Break",
+          description: "Short stories for study breaks",
+          stories: [],
+          createdAt: new Date().toISOString()
+        }
+      ])
+    }
+  }, [])
+
+  // Save playlists to localStorage whenever they change
+  useEffect(() => {
+    if (playlists.length > 0) {
+      localStorage.setItem("echoverse-playlists", JSON.stringify(playlists))
+    }
+  }, [playlists])
+
+  // Save saved stories to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("echoverse-saved-stories", JSON.stringify(savedStories))
+  }, [savedStories])
+
+  // Save saved stories to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("echoverse-saved-stories", JSON.stringify(savedStories))
+  }, [savedStories])
 
   const handlePlayStory = (story: typeof publicDomainStories[0]) => {
     setCurrentStory(story)
@@ -99,24 +209,231 @@ export default function EchoVerse() {
     }
   }
 
+  const handleUnsaveStory = (storyId: number) => {
+    setSavedStories(savedStories.filter(s => s.id !== storyId))
+    // Also remove from all playlists
+    setPlaylists(playlists.map(playlist => ({
+      ...playlist,
+      stories: playlist.stories.filter(s => s.id !== storyId)
+    })))
+  }
+
   const handleAddToPlaylist = (story: typeof publicDomainStories[0]) => {
-    // This will be handled by the PlaylistManager component
-    console.log('Add to playlist:', story.title)
+    setPendingStoryForPlaylist(story)
+    // Switch to playlists tab to show the add to playlist interface
+    setActiveTab('playlists')
+  }
+
+  const handleCreatePlaylist = (name: string, description: string) => {
+    const newPlaylist = {
+      id: Date.now().toString(),
+      name,
+      description,
+      stories: [],
+      createdAt: new Date().toISOString()
+    }
+    setPlaylists([...playlists, newPlaylist])
+    return newPlaylist.id
+  }
+
+  const handleAddStoryToPlaylist = (playlistId: string, story: typeof publicDomainStories[0]) => {
+    setPlaylists(playlists.map(playlist => {
+      if (playlist.id === playlistId) {
+        // Check if story is already in playlist
+        if (!playlist.stories.find(s => s.id === story.id)) {
+          return {
+            ...playlist,
+            stories: [...playlist.stories, story]
+          }
+        }
+      }
+      return playlist
+    }))
+    // Clear pending story after adding
+    setPendingStoryForPlaylist(null)
+  }
+
+  const handleRemoveStoryFromPlaylist = (playlistId: string, storyId: number) => {
+    setPlaylists(playlists.map(playlist => {
+      if (playlist.id === playlistId) {
+        return {
+          ...playlist,
+          stories: playlist.stories.filter(s => s.id !== storyId)
+        }
+      }
+      return playlist
+    }))
+  }
+
+  const handleDeletePlaylist = (playlistId: string) => {
+    setPlaylists(playlists.filter(p => p.id !== playlistId))
+  }
+
+  const handlePlayPlaylist = (playlist: typeof playlists[0]) => {
+    if (playlist.stories.length > 0) {
+      // Play the first story in the playlist
+      handlePlayStory(playlist.stories[0])
+    }
   }
 
   const isStorySaved = (storyId: number) => {
     return savedStories.some(s => s.id === storyId)
   }
 
+  const handleImageGenerated = (imageUrl: string) => {
+    setGeneratedImage(imageUrl)
+  }
+
+  const handleRewriteText = async () => {
+    if (!text.trim()) return
+
+    setIsRewriting(true)
+    try {
+      const result = await rewriteTextWithTone(text, tone)
+      setRewriteResult(result)
+      setUseRewrittenText(true)
+    } catch (error) {
+      console.error('Text rewriting failed:', error)
+      alert('Failed to rewrite text. Please try again.')
+    } finally {
+      setIsRewriting(false)
+    }
+  }
+
   const handleGenerate = async () => {
     if (!text.trim() || !voice || !emotion) return
 
     setIsGenerating(true)
+
+    // Auto-generate image when generating audiobook
+    const textToUse = useRewrittenText && rewriteResult ? rewriteResult.rewrittenText : text
+    if (textToUse.trim().length > 50) { // Only for substantial text
+      generateImageForText()
+    }
+
     // Simulate processing time
     setTimeout(() => {
       setAudioUrl("generated") // Flag to show audio player with text-to-speech
       setIsGenerating(false)
     }, 2000)
+  }
+
+  const generateImageForText = async () => {
+    setIsGeneratingImage(true)
+
+    try {
+      // Quick analysis for custom text
+      const style = determineStyleFromText(text)
+      const prompt = `Book cover illustration for custom story, ${style} style, featuring themes from the text, professional book cover design`
+
+      // Try AI generation
+      const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=400&height=600&seed=${Date.now()}`
+
+      const response = await fetch(pollinationsUrl, { method: 'HEAD' })
+      if (response.ok) {
+        setGeneratedImage(pollinationsUrl)
+      } else {
+        // Fallback to procedural
+        const fallbackUrl = generateProceduralImageFromText()
+        setGeneratedImage(fallbackUrl)
+      }
+    } catch (error) {
+      // Fallback to procedural
+      const fallbackUrl = generateProceduralImageFromText()
+      setGeneratedImage(fallbackUrl)
+    } finally {
+      setIsGeneratingImage(false)
+    }
+  }
+
+  const determineStyleFromText = (text: string) => {
+    const words = text.toLowerCase()
+
+    if (words.includes('horror') || words.includes('fear') || words.includes('scary')) {
+      return 'gothic, dark, mysterious, horror'
+    }
+    if (words.includes('love') || words.includes('romance') || words.includes('heart')) {
+      return 'romantic, soft, elegant, watercolor'
+    }
+    if (words.includes('adventure') || words.includes('journey') || words.includes('quest')) {
+      return 'epic, adventurous, dynamic'
+    }
+    if (words.includes('fantasy') || words.includes('magic') || words.includes('wizard')) {
+      return 'fantasy, magical, mystical'
+    }
+    if (words.includes('science') || words.includes('future') || words.includes('space')) {
+      return 'sci-fi, futuristic, technological'
+    }
+    return 'artistic, literary, classic'
+  }
+
+  const generateProceduralImageFromText = (): string => {
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return ""
+
+    canvas.width = 400
+    canvas.height = 600
+
+    // Create gradient based on text content
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
+    const words = text.toLowerCase()
+
+    if (words.includes('horror') || words.includes('fear')) {
+      gradient.addColorStop(0, '#1a0000')
+      gradient.addColorStop(1, '#000000')
+    } else if (words.includes('love') || words.includes('romance')) {
+      gradient.addColorStop(0, '#4a1a4a')
+      gradient.addColorStop(1, '#6a2c70')
+    } else if (words.includes('adventure')) {
+      gradient.addColorStop(0, '#1a4a1a')
+      gradient.addColorStop(1, '#0f2f0f')
+    } else if (words.includes('fantasy')) {
+      gradient.addColorStop(0, '#2a1a4a')
+      gradient.addColorStop(1, '#1a0f3a')
+    } else {
+      gradient.addColorStop(0, '#1a1a2e')
+      gradient.addColorStop(1, '#16213e')
+    }
+
+    ctx.fillStyle = gradient
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    // Add title
+    ctx.fillStyle = '#ffffff'
+    ctx.font = 'bold 28px serif'
+    ctx.textAlign = 'center'
+    ctx.fillText('Your Story', canvas.width / 2, 100)
+
+    // Add author
+    ctx.font = '18px serif'
+    ctx.fillStyle = '#cccccc'
+    ctx.fillText('by You', canvas.width / 2, canvas.height - 50)
+
+    // Add decorative element based on content
+    if (words.includes('heart')) {
+      // Draw heart
+      ctx.beginPath()
+      ctx.moveTo(canvas.width / 2, canvas.height / 2 + 20)
+      ctx.bezierCurveTo(canvas.width / 2, canvas.height / 2, canvas.width / 2 - 30, canvas.height / 2 - 20, canvas.width / 2 - 30, canvas.height / 2 - 10)
+      ctx.bezierCurveTo(canvas.width / 2 - 30, canvas.height / 2 - 30, canvas.width / 2, canvas.height / 2 - 30, canvas.width / 2, canvas.height / 2)
+      ctx.bezierCurveTo(canvas.width / 2, canvas.height / 2 - 30, canvas.width / 2 + 30, canvas.height / 2 - 30, canvas.width / 2 + 30, canvas.height / 2 - 10)
+      ctx.bezierCurveTo(canvas.width / 2 + 30, canvas.height / 2 - 20, canvas.width / 2, canvas.height / 2, canvas.width / 2, canvas.height / 2 + 20)
+      ctx.fillStyle = '#ff6b6b'
+      ctx.fill()
+    } else if (words.includes('star') || words.includes('magic')) {
+      // Draw star
+      ctx.beginPath()
+      ctx.moveTo(canvas.width / 2, canvas.height / 2 - 20)
+      for (let i = 0; i < 5; i++) {
+        ctx.lineTo(canvas.width / 2 + Math.cos((i * 4 * Math.PI) / 5) * 20, canvas.height / 2 + Math.sin((i * 4 * Math.PI) / 5) * 20)
+      }
+      ctx.closePath()
+      ctx.fillStyle = '#ffd700'
+      ctx.fill()
+    }
+
+    return canvas.toDataURL('image/png')
   }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -162,18 +479,20 @@ export default function EchoVerse() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-purple-200 text-sm">Recent listeners:</span>
+              <span className="text-purple-200 text-sm">Recently played stories:</span>
               <div className="flex -space-x-2">
+                {publicDomainStories.slice(0, 3).map((story, index) => (
+                  <StoryAvatar
+                    key={story.id}
+                    story={story}
+                    size="sm"
+                    className="border-2 border-slate-800"
+                  />
+                ))}
                 <Avatar className="h-8 w-8 border-2 border-slate-800">
-                  <AvatarImage src="https://github.com/shadcn.png" alt="User 1" />
-                  <AvatarFallback className="bg-amber-500 text-white text-xs">U1</AvatarFallback>
-                </Avatar>
-                <Avatar className="h-8 w-8 border-2 border-slate-800">
-                  <AvatarImage src="https://github.com/vercel.png" alt="User 2" />
-                  <AvatarFallback className="bg-green-500 text-white text-xs">U2</AvatarFallback>
-                </Avatar>
-                <Avatar className="h-8 w-8 border-2 border-slate-800">
-                  <AvatarFallback className="bg-blue-500 text-white text-xs">U3</AvatarFallback>
+                  <AvatarFallback className="bg-purple-600 text-white text-xs">
+                    +{publicDomainStories.length - 3}
+                  </AvatarFallback>
                 </Avatar>
               </div>
             </div>
@@ -271,10 +590,24 @@ export default function EchoVerse() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-white">Emotion</Label>
+                    <Label className="text-white">Tone (IBM Watsonx Granite LLM)</Label>
+                    <Select value={tone} onValueChange={(value: ToneType) => setTone(value)}>
+                      <SelectTrigger className="bg-slate-700/50 border-purple-500/30 text-white">
+                        <SelectValue placeholder="Choose tone for rewriting" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-800 border-purple-500/30">
+                        <SelectItem value="neutral">⚖️ Neutral - Clear and balanced</SelectItem>
+                        <SelectItem value="suspenseful">🔍 Suspenseful - Dramatic and mysterious</SelectItem>
+                        <SelectItem value="inspiring">✨ Inspiring - Uplifting and motivational</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-white">Voice Emotion</Label>
                     <Select value={emotion} onValueChange={setEmotion}>
                       <SelectTrigger className="bg-slate-700/50 border-purple-500/30 text-white">
-                        <SelectValue placeholder="Choose emotion" />
+                        <SelectValue placeholder="Choose voice emotion" />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-purple-500/30">
                         <SelectItem value="calm">Calm</SelectItem>
@@ -320,6 +653,25 @@ export default function EchoVerse() {
                   </div>
                 )}
 
+                {/* Rewrite Button */}
+                <Button
+                  onClick={handleRewriteText}
+                  disabled={!text.trim() || isRewriting}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-500 hover:from-blue-700 hover:to-purple-600 text-white py-3 text-lg font-semibold disabled:opacity-50 mb-4"
+                >
+                  {isRewriting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                      Rewriting with AI...
+                    </>
+                  ) : (
+                    <>
+                      <Mic className="mr-2 h-5 w-5" />
+                      Rewrite Text with {tone.charAt(0).toUpperCase() + tone.slice(1)} Tone
+                    </>
+                  )}
+                </Button>
+
                 {/* Generate Button */}
                 <Button
                   onClick={handleGenerate}
@@ -339,11 +691,63 @@ export default function EchoVerse() {
                   )}
                 </Button>
 
+                {/* Text Comparison */}
+                {(rewriteResult || isRewriting) && (
+                  <div className="mt-6">
+                    <TextComparison
+                      rewriteResult={rewriteResult}
+                      isLoading={isRewriting}
+                    />
+                  </div>
+                )}
+
+                {/* Use Rewritten Text Toggle */}
+                {rewriteResult && (
+                  <div className="mt-4 flex items-center gap-3 p-3 bg-slate-700/50 rounded-lg border border-purple-500/20">
+                    <input
+                      type="checkbox"
+                      id="useRewritten"
+                      checked={useRewrittenText}
+                      onChange={(e) => setUseRewrittenText(e.target.checked)}
+                      className="w-4 h-4 text-purple-600 bg-slate-700 border-purple-500 rounded focus:ring-purple-500"
+                    />
+                    <label htmlFor="useRewritten" className="text-white text-sm">
+                      Use rewritten text for audiobook generation
+                    </label>
+                  </div>
+                )}
+
+                {/* Generated Image Display */}
+                {(generatedImage || isGeneratingImage) && (
+                  <div className="mt-6">
+                    <div className="bg-slate-700/50 rounded-lg p-4 border border-purple-500/20">
+                      <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+                        <ImageIcon className="h-5 w-5 text-purple-400" />
+                        {isGeneratingImage ? "Generating Story Image..." : "Generated Story Image"}
+                      </h3>
+                      {isGeneratingImage ? (
+                        <div className="w-full max-w-md mx-auto h-64 bg-slate-600/50 rounded-lg border border-purple-500/30 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 mx-auto mb-4"></div>
+                            <p className="text-purple-300">Creating your story image...</p>
+                          </div>
+                        </div>
+                      ) : generatedImage && (
+                        <img
+                          src={generatedImage}
+                          alt="Generated story illustration"
+                          className="w-full max-w-md mx-auto rounded-lg border border-purple-500/30"
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* Audio Player */}
                 {audioUrl && (
                   <div className="mt-6">
                     <AudioPlayer
-                      text={text}
+                      text={useRewrittenText && rewriteResult ? rewriteResult.rewrittenText : text}
                       voice={voice}
                       emotion={emotion}
                       ambience={ambience}
@@ -351,6 +755,8 @@ export default function EchoVerse() {
                     />
                   </div>
                 )}
+
+
               </CardContent>
             </Card>
           </div>
@@ -385,7 +791,18 @@ export default function EchoVerse() {
             <div className="max-w-6xl mx-auto">
               <PlaylistManager
                 stories={publicDomainStories}
+                playlists={playlists}
+                savedStories={savedStories}
+                pendingStory={pendingStoryForPlaylist}
                 onPlayStory={handlePlayStory}
+                onPlayPlaylist={handlePlayPlaylist}
+                onSaveStory={handleSaveStory}
+                onUnsaveStory={handleUnsaveStory}
+                onCreatePlaylist={handleCreatePlaylist}
+                onAddStoryToPlaylist={handleAddStoryToPlaylist}
+                onRemoveStoryFromPlaylist={handleRemoveStoryFromPlaylist}
+                onDeletePlaylist={handleDeletePlaylist}
+                onClearPendingStory={() => setPendingStoryForPlaylist(null)}
               />
             </div>
           </section>

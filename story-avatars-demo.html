@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoVerse Story Avatars Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-purple-400 via-amber-300 to-purple-400 bg-clip-text text-transparent">
+            🎭 Story Avatars with Generated Images
+        </h1>
+        
+        <div class="max-w-6xl mx-auto space-y-8">
+            <!-- Feature Overview -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300 flex items-center gap-2">
+                    ✨ Generated Story Avatars
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">🎯 What They Are:</h3>
+                        <ul class="space-y-2 text-purple-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Story-specific avatars:</strong> Each story gets a unique circular avatar</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Auto-generated images:</strong> Created based on story content and themes</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Multiple sizes:</strong> Small, medium, large, and extra-large variants</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Fallback system:</strong> Procedural generation when AI unavailable</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Thematic styling:</strong> Colors and symbols match story genres</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2">Where You'll See Them:</h3>
+                        <div class="space-y-2 text-sm text-purple-200">
+                            <p><strong>📚 Story Cards:</strong> Author avatars in story headers</p>
+                            <p><strong>🎵 Playlists:</strong> Story previews in playlist cards</p>
+                            <p><strong>👥 User Profile:</strong> Recently played stories section</p>
+                            <p><strong>💾 Saved Stories:</strong> Quick visual identification</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Avatar Sizes Demo -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">📏 Avatar Sizes</h2>
+                
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="text-center space-y-3">
+                        <h3 class="text-white font-medium">Small (sm)</h3>
+                        <div class="flex justify-center">
+                            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-red-600 to-black border-2 border-purple-500/30 flex items-center justify-center">
+                                <span class="text-white text-xs font-bold">T</span>
+                            </div>
+                        </div>
+                        <p class="text-purple-200 text-xs">32x32px - Used in story cards, playlists</p>
+                    </div>
+                    
+                    <div class="text-center space-y-3">
+                        <h3 class="text-white font-medium">Medium (md)</h3>
+                        <div class="flex justify-center">
+                            <div class="h-12 w-12 rounded-full bg-gradient-to-br from-green-600 to-green-900 border-2 border-purple-500/30 flex items-center justify-center">
+                                <span class="text-white text-sm font-bold">🎄</span>
+                            </div>
+                        </div>
+                        <p class="text-purple-200 text-xs">48x48px - Default size for most uses</p>
+                    </div>
+                    
+                    <div class="text-center space-y-3">
+                        <h3 class="text-white font-medium">Large (lg)</h3>
+                        <div class="flex justify-center">
+                            <div class="h-16 w-16 rounded-full bg-gradient-to-br from-pink-600 to-purple-700 border-2 border-purple-500/30 flex items-center justify-center">
+                                <span class="text-white text-lg font-bold">♥</span>
+                            </div>
+                        </div>
+                        <p class="text-purple-200 text-xs">64x64px - Featured stories, profiles</p>
+                    </div>
+                    
+                    <div class="text-center space-y-3">
+                        <h3 class="text-white font-medium">Extra Large (xl)</h3>
+                        <div class="flex justify-center">
+                            <div class="h-20 w-20 rounded-full bg-gradient-to-br from-blue-600 to-indigo-900 border-2 border-purple-500/30 flex items-center justify-center">
+                                <span class="text-white text-xl font-bold">A</span>
+                            </div>
+                        </div>
+                        <p class="text-purple-200 text-xs">80x80px - Hero sections, detailed views</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Thematic Examples -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">🎨 Thematic Avatar Examples</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Story-Based Styling:</h3>
+                        <div class="space-y-3">
+                            <div class="bg-slate-700/50 rounded p-3 flex items-center gap-3">
+                                <div class="h-12 w-12 rounded-full bg-gradient-to-br from-red-900 to-black border-2 border-red-500/30 flex items-center justify-center">
+                                    <span class="text-white font-bold">👁</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium">Horror Stories</h4>
+                                    <p class="text-purple-200 text-sm">Dark gradients, gothic symbols, red accents</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-700/50 rounded p-3 flex items-center gap-3">
+                                <div class="h-12 w-12 rounded-full bg-gradient-to-br from-pink-600 to-purple-700 border-2 border-pink-500/30 flex items-center justify-center">
+                                    <span class="text-white font-bold">♥</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium">Romance Stories</h4>
+                                    <p class="text-purple-200 text-sm">Soft colors, heart symbols, elegant gradients</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-700/50 rounded p-3 flex items-center gap-3">
+                                <div class="h-12 w-12 rounded-full bg-gradient-to-br from-green-700 to-red-800 border-2 border-green-500/30 flex items-center justify-center">
+                                    <span class="text-white font-bold">🎄</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium">Holiday Stories</h4>
+                                    <p class="text-purple-200 text-sm">Festive colors, seasonal symbols, warm tones</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-700/50 rounded p-3 flex items-center gap-3">
+                                <div class="h-12 w-12 rounded-full bg-gradient-to-br from-blue-600 to-indigo-900 border-2 border-blue-500/30 flex items-center justify-center">
+                                    <span class="text-white font-bold">A</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium">Adventure Stories</h4>
+                                    <p class="text-purple-200 text-sm">Dynamic colors, bold letters, energetic feel</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Generation Process:</h3>
+                        <div class="space-y-3 text-purple-200 text-sm">
+                            <div class="bg-slate-700/50 rounded p-3">
+                                <h4 class="text-amber-300 font-medium mb-1">1. Content Analysis</h4>
+                                <p>Scans story text for keywords: horror, love, christmas, adventure, etc.</p>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3">
+                                <h4 class="text-amber-300 font-medium mb-1">2. Style Determination</h4>
+                                <p>Chooses colors, gradients, and symbols based on detected themes</p>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3">
+                                <h4 class="text-amber-300 font-medium mb-1">3. AI Generation</h4>
+                                <p>Creates circular avatar using AI with story-specific prompts</p>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3">
+                                <h4 class="text-amber-300 font-medium mb-1">4. Fallback Creation</h4>
+                                <p>Generates procedural avatar if AI unavailable using Canvas API</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Usage Examples -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">💼 Usage Examples</h2>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
+                            <span class="text-purple-400">📚</span>
+                            Story Cards
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2 p-2 bg-slate-600/50 rounded">
+                                <div class="h-8 w-8 rounded-full bg-gradient-to-br from-red-600 to-black border border-red-500/30 flex items-center justify-center">
+                                    <span class="text-white text-xs font-bold">T</span>
+                                </div>
+                                <div>
+                                    <p class="text-white text-sm font-medium">The Tell-Tale Heart</p>
+                                    <p class="text-purple-300 text-xs">by Edgar Allan Poe</p>
+                                </div>
+                            </div>
+                            <p class="text-purple-200 text-xs">Author avatar with story-themed styling</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
+                            <span class="text-purple-400">🎵</span>
+                            Playlists
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="flex -space-x-1">
+                                <div class="h-8 w-8 rounded-full bg-gradient-to-br from-red-600 to-black border border-slate-600"></div>
+                                <div class="h-8 w-8 rounded-full bg-gradient-to-br from-green-600 to-green-900 border border-slate-600"></div>
+                                <div class="h-8 w-8 rounded-full bg-gradient-to-br from-pink-600 to-purple-700 border border-slate-600"></div>
+                                <div class="h-8 w-8 rounded-full bg-slate-600 border border-slate-500 flex items-center justify-center">
+                                    <span class="text-purple-200 text-xs">+2</span>
+                                </div>
+                            </div>
+                            <p class="text-purple-200 text-xs">Story previews in playlist cards</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
+                            <span class="text-purple-400">👥</span>
+                            User Profile
+                        </h3>
+                        <div class="space-y-2">
+                            <p class="text-purple-200 text-sm">Recently played stories:</p>
+                            <div class="flex -space-x-1">
+                                <div class="h-8 w-8 rounded-full bg-gradient-to-br from-red-600 to-black border-2 border-slate-800"></div>
+                                <div class="h-8 w-8 rounded-full bg-gradient-to-br from-green-600 to-green-900 border-2 border-slate-800"></div>
+                                <div class="h-8 w-8 rounded-full bg-gradient-to-br from-pink-600 to-purple-700 border-2 border-slate-800"></div>
+                            </div>
+                            <p class="text-purple-200 text-xs">Quick visual story identification</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technical Benefits -->
+            <section class="bg-green-900/20 border border-green-500/30 rounded-lg p-6">
+                <h2 class="text-2xl font-semibold mb-4 text-green-300">🚀 Technical Benefits</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Performance:</h3>
+                        <ul class="space-y-2 text-green-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">⚡</span>
+                                <span><strong>Async generation:</strong> Non-blocking image creation</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">⚡</span>
+                                <span><strong>Loading states:</strong> Smooth user experience with spinners</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">⚡</span>
+                                <span><strong>Fallback system:</strong> Always shows something, even offline</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">⚡</span>
+                                <span><strong>Optimized sizes:</strong> Different resolutions for different uses</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">User Experience:</h3>
+                        <ul class="space-y-2 text-green-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400">✨</span>
+                                <span><strong>Visual consistency:</strong> Unified design across the app</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400">✨</span>
+                                <span><strong>Quick identification:</strong> Easy to recognize stories at a glance</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400">✨</span>
+                                <span><strong>Thematic coherence:</strong> Avatars match story genres</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400">✨</span>
+                                <span><strong>Professional appearance:</strong> Polished, modern interface</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-green-900/30 rounded-lg">
+                    <h3 class="text-green-300 font-semibold mb-2">🎯 Perfect Integration:</h3>
+                    <p class="text-green-200 text-sm">
+                        Story avatars seamlessly integrate with the existing Avatar component system, 
+                        providing automatic image generation while maintaining all the original Avatar 
+                        features like fallbacks, sizing, and accessibility.
+                    </p>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

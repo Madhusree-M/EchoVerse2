@@ -27,6 +27,8 @@ export function AudioPlayer({ audioUrl, text, voice, emotion, ambience, ambience
   const ambienceNodesRef = useRef<Array<{ node: any, context: AudioContext }> | null>(null)
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([])
   const [isAmbiencePlaying, setIsAmbiencePlaying] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
+  const [isSkipping, setIsSkipping] = useState(false)
 
   // Ambience sound URLs (using free online sources)
   const ambienceUrls = {
@@ -429,10 +431,68 @@ export function AudioPlayer({ audioUrl, text, voice, emotion, ambience, ambience
   }
 
   const skipTime = (seconds: number) => {
-    const audio = audioRef.current
-    if (!audio) return
+    setIsSkipping(true)
 
-    audio.currentTime = Math.max(0, Math.min(duration, audio.currentTime + seconds))
+    const audio = audioRef.current
+
+    // For regular audio files
+    if (audio && audioUrl) {
+      audio.currentTime = Math.max(0, Math.min(duration, audio.currentTime + seconds))
+      setTimeout(() => setIsSkipping(false), 300)
+      return
+    }
+
+    // For text-to-speech, we need to handle differently
+    if (text && speechSynthesis) {
+      // Cancel current speech
+      speechSynthesis.cancel()
+
+      // Calculate approximate position in text based on time
+      const wordsPerMinute = 150 // Average speaking rate
+      const wordsPerSecond = wordsPerMinute / 60
+      const currentWords = Math.floor(currentTime * wordsPerSecond)
+      const skipWords = Math.floor(seconds * wordsPerSecond)
+      const newWordPosition = Math.max(0, currentWords + skipWords)
+
+      // Split text into words and start from new position
+      const words = text.split(' ')
+      const newStartPosition = Math.min(newWordPosition, words.length - 1)
+      const remainingText = words.slice(newStartPosition).join(' ')
+
+      if (remainingText.trim()) {
+        // Update current time estimate
+        setCurrentTime(Math.max(0, currentTime + seconds))
+
+        // Start speech from new position
+        const utterance = new SpeechSynthesisUtterance(remainingText)
+
+        // Apply voice settings
+        if (availableVoices.length > 0) {
+          const selectedVoice = availableVoices.find(v => v.name.includes(voice || '')) || availableVoices[0]
+          utterance.voice = selectedVoice
+        }
+
+        utterance.rate = playbackSpeed[0]
+        utterance.volume = volume[0]
+
+        utterance.onend = () => {
+          setIsPlaying(false)
+          setCurrentTime(0)
+          setIsSkipping(false)
+        }
+
+        utterance.onstart = () => {
+          setIsSkipping(false)
+        }
+
+        speechSynthesis.speak(utterance)
+        speechRef.current = utterance
+      } else {
+        setIsSkipping(false)
+      }
+    } else {
+      setIsSkipping(false)
+    }
   }
 
   const formatTime = (time: number) => {
@@ -441,16 +501,142 @@ export function AudioPlayer({ audioUrl, text, voice, emotion, ambience, ambience
     return `${minutes}:${seconds.toString().padStart(2, "0")}`
   }
 
-  const handleDownload = () => {
-    if (audioUrl) {
-      const link = document.createElement("a")
-      link.href = audioUrl
-      link.download = "audiobook.mp3"
-      link.click()
-    } else if (text) {
-      // For text-to-speech, we can't directly download, but we can show a message
-      alert("Text-to-speech audio cannot be downloaded directly. Consider using a dedicated TTS service for downloadable audio files.")
+  const handleDownload = async () => {
+    setIsDownloading(true)
+
+    try {
+      if (audioUrl) {
+        // Download regular audio file
+        const link = document.createElement("a")
+        link.href = audioUrl
+        link.download = "audiobook.mp3"
+        link.click()
+        setTimeout(() => setIsDownloading(false), 1000)
+      } else if (text) {
+        // For text-to-speech, create a downloadable audio file
+        await downloadTextToSpeech()
+      }
+    } catch (error) {
+      console.error('Download failed:', error)
+      alert("Download failed. Your browser may not support audio recording from text-to-speech.")
+    } finally {
+      setIsDownloading(false)
     }
+  }
+
+  const downloadTextToSpeech = async (): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      if (!text || !speechSynthesis) {
+        reject(new Error('Text or speech synthesis not available'))
+        return
+      }
+
+      // Try advanced recording method first
+      try {
+        downloadWithRecording(resolve, reject)
+      } catch (error) {
+        // Fallback to simple text file download
+        downloadAsTextFile(resolve)
+      }
+    })
+  }
+
+  const downloadWithRecording = (resolve: () => void, reject: (error: Error) => void) => {
+    // Check if MediaRecorder is supported
+    if (!window.MediaRecorder) {
+      throw new Error('MediaRecorder not supported')
+    }
+
+    // Create audio context for recording
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+    const destination = audioContext.createMediaStreamDestination()
+
+    // Create media recorder
+    const mediaRecorder = new MediaRecorder(destination.stream)
+    const audioChunks: Blob[] = []
+
+    mediaRecorder.ondataavailable = (event) => {
+      audioChunks.push(event.data)
+    }
+
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' })
+      const audioUrl = URL.createObjectURL(audioBlob)
+
+      // Create download link
+      const link = document.createElement('a')
+      link.href = audioUrl
+      link.download = `audiobook-${Date.now()}.wav`
+      link.click()
+
+      // Cleanup
+      URL.revokeObjectURL(audioUrl)
+      audioContext.close()
+      resolve()
+    }
+
+    mediaRecorder.onerror = (event) => {
+      reject(new Error('Recording failed'))
+    }
+
+    // Start recording
+    mediaRecorder.start()
+
+    // Create and configure speech utterance
+    const utterance = new SpeechSynthesisUtterance(text)
+
+    if (availableVoices.length > 0) {
+      const selectedVoice = availableVoices.find(v => v.name.includes(voice || '')) || availableVoices[0]
+      utterance.voice = selectedVoice
+    }
+
+    utterance.rate = playbackSpeed[0]
+    utterance.volume = volume[0]
+
+    utterance.onend = () => {
+      // Stop recording after speech ends
+      setTimeout(() => {
+        mediaRecorder.stop()
+      }, 500) // Small delay to ensure all audio is captured
+    }
+
+    utterance.onerror = () => {
+      mediaRecorder.stop()
+      reject(new Error('Speech synthesis failed'))
+    }
+
+    // Speak the text
+    speechSynthesis.speak(utterance)
+  }
+
+  const downloadAsTextFile = (resolve: () => void) => {
+    // Fallback: download as text file with instructions
+    const content = `EchoVerse Audiobook Text
+========================
+
+Title: ${text.substring(0, 50)}...
+Voice: ${voice || 'default'}
+Emotion: ${emotion || 'calm'}
+Speed: ${playbackSpeed[0]}x
+
+Text Content:
+${text}
+
+Instructions:
+This text can be used with any text-to-speech software or service to create an audio file.
+Recommended settings: Voice: ${voice || 'default'}, Speed: ${playbackSpeed[0]}x
+`
+
+    const blob = new Blob([content], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `audiobook-text-${Date.now()}.txt`
+    link.click()
+
+    URL.revokeObjectURL(url)
+    resolve()
   }
 
   // Cleanup speech synthesis and ambience on unmount
@@ -512,19 +698,43 @@ export function AudioPlayer({ audioUrl, text, voice, emotion, ambience, ambience
       {/* Controls */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" onClick={() => skipTime(-10)} className="text-white hover:bg-purple-600/20">
-            <SkipBack className="h-4 w-4" />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => skipTime(-10)}
+            disabled={isSkipping}
+            className="text-white hover:bg-purple-600/20 disabled:opacity-50"
+            title="Skip backward 10 seconds"
+          >
+            {isSkipping ? (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+            ) : (
+              <SkipBack className="h-4 w-4" />
+            )}
           </Button>
 
           <Button
             onClick={togglePlayPause}
-            className="bg-gradient-to-r from-purple-600 to-amber-500 hover:from-purple-700 hover:to-amber-600 text-white"
+            disabled={isSkipping}
+            className="bg-gradient-to-r from-purple-600 to-amber-500 hover:from-purple-700 hover:to-amber-600 text-white disabled:opacity-50"
+            title={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
           </Button>
 
-          <Button variant="ghost" size="sm" onClick={() => skipTime(10)} className="text-white hover:bg-purple-600/20">
-            <SkipForward className="h-4 w-4" />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => skipTime(10)}
+            disabled={isSkipping}
+            className="text-white hover:bg-purple-600/20 disabled:opacity-50"
+            title="Skip forward 10 seconds"
+          >
+            {isSkipping ? (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+            ) : (
+              <SkipForward className="h-4 w-4" />
+            )}
           </Button>
         </div>
 
@@ -539,11 +749,39 @@ export function AudioPlayer({ audioUrl, text, voice, emotion, ambience, ambience
           </div>
 
           {/* Download Button */}
-          <Button variant="ghost" size="sm" onClick={handleDownload} className="text-white hover:bg-purple-600/20">
-            <Download className="h-4 w-4" />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleDownload}
+            disabled={isDownloading}
+            className="text-white hover:bg-purple-600/20 disabled:opacity-50"
+            title={text ? "Download as audio file (TTS)" : "Download audio file"}
+          >
+            {isDownloading ? (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
           </Button>
         </div>
       </div>
+
+      {/* Status Messages */}
+      {isDownloading && (
+        <div className="mt-2 text-center">
+          <p className="text-amber-300 text-sm">
+            {text ? "🎤 Recording text-to-speech audio..." : "📥 Downloading audio file..."}
+          </p>
+        </div>
+      )}
+
+      {isSkipping && (
+        <div className="mt-2 text-center">
+          <p className="text-blue-300 text-sm">
+            ⏭️ {text ? "Repositioning in text..." : "Seeking in audio..."}
+          </p>
+        </div>
+      )}
     </div>
   )
 }

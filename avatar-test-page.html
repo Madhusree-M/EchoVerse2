@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Avatar Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-center">Story Avatar Generation Test</h1>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Test Stories -->
+            <div class="space-y-6">
+                <h2 class="text-xl font-semibold mb-4">Test Stories</h2>
+                
+                <div id="horror-avatar" class="bg-slate-800 rounded-lg p-4">
+                    <h3 class="text-white font-medium mb-2">Horror Story</h3>
+                    <div class="flex items-center gap-3">
+                        <div id="horror-img" class="w-16 h-16 rounded-full border-2 border-red-500/30 bg-slate-600 flex items-center justify-center">
+                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-red-400"></div>
+                        </div>
+                        <div>
+                            <p class="text-white">The Tell-Tale Heart</p>
+                            <p class="text-purple-300 text-sm">by Edgar Allan Poe</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="romance-avatar" class="bg-slate-800 rounded-lg p-4">
+                    <h3 class="text-white font-medium mb-2">Romance Story</h3>
+                    <div class="flex items-center gap-3">
+                        <div id="romance-img" class="w-16 h-16 rounded-full border-2 border-pink-500/30 bg-slate-600 flex items-center justify-center">
+                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-pink-400"></div>
+                        </div>
+                        <div>
+                            <p class="text-white">Love Story</p>
+                            <p class="text-purple-300 text-sm">by Romance Author</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="christmas-avatar" class="bg-slate-800 rounded-lg p-4">
+                    <h3 class="text-white font-medium mb-2">Christmas Story</h3>
+                    <div class="flex items-center gap-3">
+                        <div id="christmas-img" class="w-16 h-16 rounded-full border-2 border-green-500/30 bg-slate-600 flex items-center justify-center">
+                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-green-400"></div>
+                        </div>
+                        <div>
+                            <p class="text-white">The Gift of the Magi</p>
+                            <p class="text-purple-300 text-sm">by O. Henry</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Generation Log -->
+            <div class="space-y-4">
+                <h2 class="text-xl font-semibold mb-4">Generation Log</h2>
+                <div id="log" class="bg-slate-800 rounded-lg p-4 h-96 overflow-y-auto">
+                    <p class="text-purple-200 text-sm">Starting avatar generation...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-8 text-center">
+            <button onclick="generateAllAvatars()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold">
+                Regenerate All Avatars
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function log(message) {
+            const logDiv = document.getElementById('log');
+            const p = document.createElement('p');
+            p.className = 'text-purple-200 text-sm mb-1';
+            p.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            logDiv.appendChild(p);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function generateProceduralAvatar(title, author, text) {
+            try {
+                log(`Generating procedural avatar for "${title}"`);
+                
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                if (!ctx) {
+                    log('Canvas context not available');
+                    return "";
+                }
+
+                canvas.width = 200;
+                canvas.height = 200;
+
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const radius = canvas.width / 2;
+
+                const gradient = ctx.createRadialGradient(centerX, centerY, 20, centerX, centerY, radius);
+                const words = text.toLowerCase();
+                
+                // Choose colors based on story content
+                if (words.includes('horror') || words.includes('fear') || words.includes('mad') || author.includes('Poe')) {
+                    gradient.addColorStop(0, '#8b0000');
+                    gradient.addColorStop(0.7, '#4a0000');
+                    gradient.addColorStop(1, '#000000');
+                    log('Applied horror theme colors');
+                } else if (words.includes('christmas') || words.includes('gift') || words.includes('holiday')) {
+                    gradient.addColorStop(0, '#228b22');
+                    gradient.addColorStop(0.7, '#006400');
+                    gradient.addColorStop(1, '#8b0000');
+                    log('Applied Christmas theme colors');
+                } else if (words.includes('love') || words.includes('romance') || words.includes('heart')) {
+                    gradient.addColorStop(0, '#ff69b4');
+                    gradient.addColorStop(0.7, '#8b008b');
+                    gradient.addColorStop(1, '#4b0082');
+                    log('Applied romance theme colors');
+                } else {
+                    gradient.addColorStop(0, '#9370db');
+                    gradient.addColorStop(0.7, '#663399');
+                    gradient.addColorStop(1, '#2e1065');
+                    log('Applied default theme colors');
+                }
+
+                // Fill circle
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // Add text/symbol
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = '#000000';
+                ctx.shadowBlur = 2;
+                ctx.font = 'bold 64px serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                let displayText = title.charAt(0).toUpperCase();
+                
+                if (words.includes('heart') || words.includes('love')) {
+                    displayText = '♥';
+                    ctx.font = 'bold 48px serif';
+                } else if (words.includes('eye') || words.includes('eyes')) {
+                    displayText = '👁';
+                    ctx.font = 'bold 48px serif';
+                } else if (words.includes('christmas') || words.includes('gift')) {
+                    displayText = '🎄';
+                    ctx.font = 'bold 48px serif';
+                }
+                
+                ctx.fillText(displayText, centerX, centerY);
+                log(`Added symbol/text: ${displayText}`);
+
+                // Add border
+                ctx.shadowColor = 'transparent';
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius - 2, 0, 2 * Math.PI);
+                ctx.stroke();
+
+                const dataUrl = canvas.toDataURL('image/png');
+                log(`Successfully generated avatar for "${title}"`);
+                return dataUrl;
+            } catch (error) {
+                log(`Error generating avatar: ${error.message}`);
+                return "";
+            }
+        }
+
+        function generateAvatar(storyId, title, author, text) {
+            log(`Starting generation for "${title}"`);
+            
+            // Generate procedural avatar
+            const avatarUrl = generateProceduralAvatar(title, author, text);
+            
+            if (avatarUrl) {
+                const imgElement = document.getElementById(storyId + '-img');
+                imgElement.innerHTML = `<img src="${avatarUrl}" alt="${title}" class="w-full h-full object-cover rounded-full">`;
+                log(`✅ Avatar displayed for "${title}"`);
+            } else {
+                log(`❌ Failed to generate avatar for "${title}"`);
+            }
+        }
+
+        function generateAllAvatars() {
+            log('=== Starting avatar generation ===');
+            
+            // Test stories
+            const stories = [
+                {
+                    id: 'horror',
+                    title: 'The Tell-Tale Heart',
+                    author: 'Edgar Allan Poe',
+                    text: 'True! nervous, very, very dreadfully nervous I had been and am; but why will you say that I am mad? The disease had sharpened my senses, not destroyed, not dulled them. Above all was the sense of hearing acute. I heard all things in the heaven and in the earth. I heard many things in hell. How then am I mad? Hearken! and observe how healthily, how calmly, I can tell you the whole story.'
+                },
+                {
+                    id: 'romance',
+                    title: 'Love Story',
+                    author: 'Romance Author',
+                    text: 'In the heart of the city, where love blooms eternal, two souls found each other against all odds. Their hearts beat as one, a symphony of romance that echoed through the streets. Love conquered all, as it always does in the most beautiful stories ever told.'
+                },
+                {
+                    id: 'christmas',
+                    title: 'The Gift of the Magi',
+                    author: 'O. Henry',
+                    text: 'One dollar and eighty-seven cents. That was all. And sixty cents of it was in pennies. Pennies saved one and two at a time by bulldozing the grocer and the vegetable man and the butcher until one\'s cheeks burned with the silent imputation of parsimony that such close dealing implied. Three times Della counted it. One dollar and eighty-seven cents. And the next day would be Christmas.'
+                }
+            ];
+
+            stories.forEach(story => {
+                setTimeout(() => {
+                    generateAvatar(story.id, story.title, story.author, story.text);
+                }, 500);
+            });
+        }
+
+        // Auto-generate on page load
+        window.addEventListener('load', () => {
+            setTimeout(generateAllAvatars, 1000);
+        });
+    </script>
+</body>
+</html>

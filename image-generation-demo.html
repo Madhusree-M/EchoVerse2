@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoVerse Image Generation Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-purple-400 via-amber-300 to-purple-400 bg-clip-text text-transparent">
+            🎨 EchoVerse Image Generation
+        </h1>
+        
+        <div class="max-w-6xl mx-auto space-y-8">
+            <!-- Feature Overview -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300 flex items-center gap-2">
+                    ✨ AI-Powered Story Illustrations
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">🎯 What It Does:</h3>
+                        <ul class="space-y-2 text-purple-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Analyzes story content:</strong> Extracts themes, characters, and settings</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Multiple art styles:</strong> Realistic, artistic, vintage, gothic, etc.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>AI + Procedural generation:</strong> Uses AI APIs with canvas fallback</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Instant generation:</strong> Creates images in seconds</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400">✅</span>
+                                <span><strong>Download & use:</strong> Save images for your stories</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2">How It Works:</h3>
+                        <div class="space-y-2 text-sm text-purple-200">
+                            <p><strong>1. Content Analysis:</strong> Scans story text for key elements</p>
+                            <p><strong>2. Prompt Generation:</strong> Creates detailed AI prompts</p>
+                            <p><strong>3. Style Application:</strong> Applies chosen artistic style</p>
+                            <p><strong>4. Image Creation:</strong> Generates using AI or procedural methods</p>
+                            <p><strong>5. Integration:</strong> Displays in story modal and generator</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Art Styles -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">🎨 Available Art Styles</h2>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2">📸 Realistic</h3>
+                        <p class="text-purple-200 text-sm mb-2">Photorealistic, detailed imagery</p>
+                        <div class="bg-slate-600/50 rounded p-2 text-xs text-purple-300">
+                            Perfect for: Modern stories, thrillers, contemporary fiction
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2">🎨 Artistic</h3>
+                        <p class="text-purple-200 text-sm mb-2">Painted artwork with brushstrokes</p>
+                        <div class="bg-slate-600/50 rounded p-2 text-xs text-purple-300">
+                            Perfect for: Literary fiction, poetry, artistic narratives
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2">📚 Vintage</h3>
+                        <p class="text-purple-200 text-sm mb-2">Classic book cover style</p>
+                        <div class="bg-slate-600/50 rounded p-2 text-xs text-purple-300">
+                            Perfect for: Classic literature, historical fiction
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2">🖤 Gothic</h3>
+                        <p class="text-purple-200 text-sm mb-2">Dark, atmospheric style</p>
+                        <div class="bg-slate-600/50 rounded p-2 text-xs text-purple-300">
+                            Perfect for: Horror, mystery, dark fantasy
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2">🎯 Minimalist</h3>
+                        <p class="text-purple-200 text-sm mb-2">Simple, clean design</p>
+                        <div class="bg-slate-600/50 rounded p-2 text-xs text-purple-300">
+                            Perfect for: Philosophy, self-help, modern poetry
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2">🌊 Watercolor</h3>
+                        <p class="text-purple-200 text-sm mb-2">Soft watercolor painting</p>
+                        <div class="bg-slate-600/50 rounded p-2 text-xs text-purple-300">
+                            Perfect for: Children's stories, romance, gentle tales
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Content Analysis -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">🔍 Smart Content Analysis</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">What It Detects:</h3>
+                        <div class="space-y-3">
+                            <div class="bg-slate-700/50 rounded p-3">
+                                <h4 class="text-amber-300 font-medium">👥 Characters</h4>
+                                <p class="text-purple-200 text-sm">Old man, woman, child, elderly character</p>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3">
+                                <h4 class="text-amber-300 font-medium">🏠 Settings</h4>
+                                <p class="text-purple-200 text-sm">Interior scenes, forest, urban, nighttime, winter</p>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3">
+                                <h4 class="text-amber-300 font-medium">🎭 Mood</h4>
+                                <p class="text-purple-200 text-sm">Horror, romance, mystery, holiday themes</p>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-3">
+                                <h4 class="text-amber-300 font-medium">🎯 Objects</h4>
+                                <p class="text-purple-200 text-sm">Eyes, fire, books, symbolic elements</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Example Analysis:</h3>
+                        <div class="bg-slate-700/50 rounded p-4">
+                            <h4 class="text-white font-medium mb-2">"The Tell-Tale Heart"</h4>
+                            <div class="space-y-2 text-sm">
+                                <p class="text-purple-200"><strong>Detected:</strong> elderly character, prominent eyes, horror atmosphere, interior scene, nighttime</p>
+                                <p class="text-green-400"><strong>Generated Prompt:</strong> "Book cover illustration for 'The Tell-Tale Heart' by Edgar Allan Poe, featuring elderly character, prominent eyes, horror atmosphere, interior scene, nighttime, gothic style, dark atmosphere, dramatic lighting"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technical Implementation -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">⚙️ Technical Implementation</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">🤖 AI Generation:</h3>
+                        <ul class="space-y-2 text-purple-200 text-sm">
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-400">•</span>
+                                <span><strong>Pollinations AI:</strong> Free AI image generation service</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-400">•</span>
+                                <span><strong>Dynamic prompts:</strong> Generated based on story analysis</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-400">•</span>
+                                <span><strong>Style integration:</strong> Artistic style applied to prompts</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-400">•</span>
+                                <span><strong>Fallback system:</strong> Graceful degradation to procedural</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">🎨 Procedural Fallback:</h3>
+                        <ul class="space-y-2 text-purple-200 text-sm">
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400">•</span>
+                                <span><strong>Canvas API:</strong> HTML5 canvas for image generation</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400">•</span>
+                                <span><strong>Dynamic gradients:</strong> Colors based on story themes</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400">•</span>
+                                <span><strong>Symbolic elements:</strong> Eyes, hearts, decorative shapes</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400">•</span>
+                                <span><strong>Typography:</strong> Title and author rendering</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Where to Find It -->
+            <section class="bg-green-900/20 border border-green-500/30 rounded-lg p-6">
+                <h2 class="text-2xl font-semibold mb-4 text-green-300">📍 Where to Find Image Generation</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">🎤 In the Generator Tab:</h3>
+                        <ol class="space-y-2 text-green-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">1.</span>
+                                <span>Enter your story text</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">2.</span>
+                                <span>Scroll down to see the Image Generator</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">3.</span>
+                                <span>Choose your preferred art style</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">4.</span>
+                                <span>Click "Generate Story Image"</span>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">📚 In Story Modals:</h3>
+                        <ol class="space-y-2 text-green-200">
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">1.</span>
+                                <span>Click "Listen Now" on any story card</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">2.</span>
+                                <span>Click the "Images" tab in the modal</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">3.</span>
+                                <span>Generate custom images for existing stories</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-green-400 font-bold">4.</span>
+                                <span>Generated images appear in the story header</span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-green-900/30 rounded-lg">
+                    <h3 class="text-green-300 font-semibold mb-2">💡 Pro Tips:</h3>
+                    <ul class="space-y-1 text-green-200 text-sm">
+                        <li>• Try different art styles to find the perfect match for your story</li>
+                        <li>• Generated images can be downloaded and used elsewhere</li>
+                        <li>• The system works offline with procedural generation</li>
+                        <li>• Images are automatically optimized for book cover dimensions</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

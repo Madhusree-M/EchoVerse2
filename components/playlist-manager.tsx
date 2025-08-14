@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { StoryAvatar } from "@/components/story-avatar"
 import { 
   Dialog, 
   DialogContent, 
@@ -55,7 +56,18 @@ interface Playlist {
 
 interface PlaylistManagerProps {
   stories: Story[]
+  playlists: Playlist[]
+  savedStories: Story[]
+  pendingStory: Story | null
   onPlayStory: (story: Story) => void
+  onPlayPlaylist: (playlist: Playlist) => void
+  onSaveStory: (story: Story) => void
+  onUnsaveStory: (storyId: number) => void
+  onCreatePlaylist: (name: string, description: string) => string
+  onAddStoryToPlaylist: (playlistId: string, story: Story) => void
+  onRemoveStoryFromPlaylist: (playlistId: string, storyId: number) => void
+  onDeletePlaylist: (playlistId: string) => void
+  onClearPendingStory: () => void
 }
 
 const defaultPlaylists: Playlist[] = [
@@ -94,75 +106,48 @@ const playlistIcons = {
   book: BookOpen
 }
 
-export function PlaylistManager({ stories, onPlayStory }: PlaylistManagerProps) {
-  const [playlists, setPlaylists] = useState<Playlist[]>(defaultPlaylists)
-  const [savedStories, setSavedStories] = useState<Story[]>([])
+export function PlaylistManager({
+  stories,
+  playlists,
+  savedStories,
+  pendingStory,
+  onPlayStory,
+  onPlayPlaylist,
+  onSaveStory,
+  onUnsaveStory,
+  onCreatePlaylist,
+  onAddStoryToPlaylist,
+  onRemoveStoryFromPlaylist,
+  onDeletePlaylist,
+  onClearPendingStory
+}: PlaylistManagerProps) {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [newPlaylistName, setNewPlaylistName] = useState("")
   const [newPlaylistDescription, setNewPlaylistDescription] = useState("")
   const [newPlaylistIcon, setNewPlaylistIcon] = useState("book")
+  const [showAddToPlaylistDialog, setShowAddToPlaylistDialog] = useState(false)
 
-  // Load saved data from localStorage
+  // Handle pending story for playlist addition
   useEffect(() => {
-    const savedPlaylistsData = localStorage.getItem("echoverse-playlists")
-    const savedStoriesData = localStorage.getItem("echoverse-saved-stories")
-    
-    if (savedPlaylistsData) {
-      try {
-        const parsedPlaylists = JSON.parse(savedPlaylistsData)
-        setPlaylists(parsedPlaylists)
-      } catch (error) {
-        console.error("Error loading playlists:", error)
-      }
+    if (pendingStory) {
+      setShowAddToPlaylistDialog(true)
     }
-    
-    if (savedStoriesData) {
-      try {
-        const parsedStories = JSON.parse(savedStoriesData)
-        setSavedStories(parsedStories)
-      } catch (error) {
-        console.error("Error loading saved stories:", error)
-      }
-    }
-  }, [])
+  }, [pendingStory])
 
-  // Save data to localStorage
-  useEffect(() => {
-    localStorage.setItem("echoverse-playlists", JSON.stringify(playlists))
-  }, [playlists])
-
-  useEffect(() => {
-    localStorage.setItem("echoverse-saved-stories", JSON.stringify(savedStories))
-  }, [savedStories])
+  // No localStorage handling needed - managed by parent component
 
   const saveStory = (story: Story) => {
-    if (!savedStories.find(s => s.id === story.id)) {
-      setSavedStories([...savedStories, story])
-    }
+    onSaveStory(story)
   }
 
   const unsaveStory = (storyId: number) => {
-    setSavedStories(savedStories.filter(s => s.id !== storyId))
-    // Also remove from all playlists
-    setPlaylists(playlists.map(playlist => ({
-      ...playlist,
-      stories: playlist.stories.filter(s => s.id !== storyId)
-    })))
+    onUnsaveStory(storyId)
   }
 
   const createPlaylist = () => {
     if (!newPlaylistName.trim()) return
 
-    const newPlaylist: Playlist = {
-      id: Date.now().toString(),
-      name: newPlaylistName,
-      description: newPlaylistDescription,
-      icon: newPlaylistIcon,
-      stories: [],
-      createdAt: new Date()
-    }
-
-    setPlaylists([...playlists, newPlaylist])
+    onCreatePlaylist(newPlaylistName, newPlaylistDescription)
     setNewPlaylistName("")
     setNewPlaylistDescription("")
     setNewPlaylistIcon("book")
@@ -170,33 +155,15 @@ export function PlaylistManager({ stories, onPlayStory }: PlaylistManagerProps) 
   }
 
   const deletePlaylist = (playlistId: string) => {
-    setPlaylists(playlists.filter(p => p.id !== playlistId))
+    onDeletePlaylist(playlistId)
   }
 
   const addStoryToPlaylist = (story: Story, playlistId: string) => {
-    setPlaylists(playlists.map(playlist => {
-      if (playlist.id === playlistId) {
-        if (!playlist.stories.find(s => s.id === story.id)) {
-          return {
-            ...playlist,
-            stories: [...playlist.stories, story]
-          }
-        }
-      }
-      return playlist
-    }))
+    onAddStoryToPlaylist(playlistId, story)
   }
 
   const removeStoryFromPlaylist = (storyId: number, playlistId: string) => {
-    setPlaylists(playlists.map(playlist => {
-      if (playlist.id === playlistId) {
-        return {
-          ...playlist,
-          stories: playlist.stories.filter(s => s.id !== storyId)
-        }
-      }
-      return playlist
-    }))
+    onRemoveStoryFromPlaylist(playlistId, storyId)
   }
 
   const isStorySaved = (storyId: number) => {
@@ -367,20 +334,38 @@ export function PlaylistManager({ stories, onPlayStory }: PlaylistManagerProps) 
                     </div>
                     
                     {playlist.stories.length > 0 && (
-                      <div className="flex -space-x-1">
-                        {playlist.stories.slice(0, 3).map((story, index) => (
-                          <Avatar key={story.id} className="h-6 w-6 border border-slate-600">
-                            <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${story.author}`} />
-                            <AvatarFallback className="bg-purple-600 text-white text-xs">
-                              {story.author.split(' ').map(n => n[0]).join('').slice(0, 2)}
-                            </AvatarFallback>
-                          </Avatar>
-                        ))}
-                        {playlist.stories.length > 3 && (
-                          <div className="h-6 w-6 rounded-full bg-slate-600 border border-slate-500 flex items-center justify-center text-xs text-purple-200">
-                            +{playlist.stories.length - 3}
-                          </div>
-                        )}
+                      <div className="space-y-3">
+                        <div className="flex -space-x-1">
+                          {playlist.stories.slice(0, 3).map((story) => (
+                            <StoryAvatar
+                              key={story.id}
+                              story={story}
+                              size="sm"
+                              className="border border-slate-600"
+                            />
+                          ))}
+                          {playlist.stories.length > 3 && (
+                            <div className="h-8 w-8 rounded-full bg-slate-600 border border-slate-500 flex items-center justify-center text-xs text-purple-200">
+                              +{playlist.stories.length - 3}
+                            </div>
+                          )}
+                        </div>
+
+                        <Button
+                          onClick={() => onPlayPlaylist(playlist)}
+                          className="w-full bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white"
+                          size="sm"
+                        >
+                          <Play className="h-4 w-4 mr-2" />
+                          Play Playlist
+                        </Button>
+                      </div>
+                    )}
+
+                    {playlist.stories.length === 0 && (
+                      <div className="text-center py-4">
+                        <p className="text-purple-300 text-sm mb-2">No stories yet</p>
+                        <p className="text-purple-400 text-xs">Add stories from the Library</p>
                       </div>
                     )}
                   </div>
@@ -390,6 +375,69 @@ export function PlaylistManager({ stories, onPlayStory }: PlaylistManagerProps) 
           })}
         </div>
       </section>
+
+      {/* Add to Playlist Dialog */}
+      <Dialog open={showAddToPlaylistDialog} onOpenChange={(open) => {
+        setShowAddToPlaylistDialog(open)
+        if (!open) {
+          onClearPendingStory()
+        }
+      }}>
+        <DialogContent className="bg-slate-800 border-purple-500/20">
+          <DialogHeader>
+            <DialogTitle className="text-white">Add to Playlist</DialogTitle>
+            <DialogDescription className="text-purple-200">
+              {pendingStory && `Add "${pendingStory.title}" to a playlist`}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            {playlists.length === 0 ? (
+              <div className="text-center py-4">
+                <p className="text-purple-200 mb-4">No playlists available. Create one first!</p>
+                <Button
+                  onClick={() => {
+                    setShowAddToPlaylistDialog(false)
+                    setIsCreateDialogOpen(true)
+                  }}
+                  className="bg-purple-600 hover:bg-purple-700"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Playlist
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Label className="text-white">Select Playlist:</Label>
+                {playlists.map((playlist) => {
+                  const IconComponent = getPlaylistIcon(playlist.icon)
+                  const isAlreadyAdded = pendingStory && playlist.stories.find(s => s.id === pendingStory.id)
+
+                  return (
+                    <Button
+                      key={playlist.id}
+                      variant="ghost"
+                      disabled={isAlreadyAdded}
+                      onClick={() => {
+                        if (pendingStory) {
+                          addStoryToPlaylist(pendingStory, playlist.id)
+                          setShowAddToPlaylistDialog(false)
+                        }
+                      }}
+                      className="w-full justify-start text-white hover:bg-slate-700 disabled:opacity-50"
+                    >
+                      <IconComponent className="h-4 w-4 mr-2 text-purple-400" />
+                      <span className="flex-1 text-left">{playlist.name}</span>
+                      <span className="text-xs text-purple-300">
+                        {isAlreadyAdded ? "Already added" : `${playlist.stories.length} stories`}
+                      </span>
+                    </Button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

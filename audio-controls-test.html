@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoVerse Audio Controls Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-purple-400 via-amber-300 to-purple-400 bg-clip-text text-transparent">
+            🎵 Audio Controls Fix Test
+        </h1>
+        
+        <div class="max-w-6xl mx-auto space-y-8">
+            <!-- Fixed Issues -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300 flex items-center gap-2">
+                    ✅ Fixed Audio Control Issues
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">🎯 Skip Buttons (Forward/Backward):</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3 p-3 bg-green-900/20 border border-green-500/30 rounded">
+                                <span class="text-green-400 text-xl">✅</span>
+                                <div>
+                                    <p class="text-white font-medium">Regular Audio Files</p>
+                                    <p class="text-green-200 text-sm">Skip 10 seconds forward/backward in audio timeline</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-3 p-3 bg-green-900/20 border border-green-500/30 rounded">
+                                <span class="text-green-400 text-xl">✅</span>
+                                <div>
+                                    <p class="text-white font-medium">Text-to-Speech</p>
+                                    <p class="text-green-200 text-sm">Smart word-based skipping with speech repositioning</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-3 p-3 bg-blue-900/20 border border-blue-500/30 rounded">
+                                <span class="text-blue-400 text-xl">🔄</span>
+                                <div>
+                                    <p class="text-white font-medium">Visual Feedback</p>
+                                    <p class="text-blue-200 text-sm">Loading spinners and status messages during skip</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">📥 Download Button:</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3 p-3 bg-green-900/20 border border-green-500/30 rounded">
+                                <span class="text-green-400 text-xl">✅</span>
+                                <div>
+                                    <p class="text-white font-medium">Regular Audio Files</p>
+                                    <p class="text-green-200 text-sm">Direct download of MP3/audio files</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-3 p-3 bg-green-900/20 border border-green-500/30 rounded">
+                                <span class="text-green-400 text-xl">✅</span>
+                                <div>
+                                    <p class="text-white font-medium">Text-to-Speech Recording</p>
+                                    <p class="text-green-200 text-sm">Records TTS audio and downloads as WAV file</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-3 p-3 bg-amber-900/20 border border-amber-500/30 rounded">
+                                <span class="text-amber-400 text-xl">🔄</span>
+                                <div>
+                                    <p class="text-white font-medium">Fallback Option</p>
+                                    <p class="text-amber-200 text-sm">Downloads text file if recording not supported</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">⚙️ How the Fixes Work</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Skip Button Logic:</h3>
+                        <div class="bg-slate-700/50 rounded p-4 text-sm">
+                            <h4 class="text-amber-300 font-medium mb-2">For Regular Audio:</h4>
+                            <p class="text-purple-200 mb-3">• Uses audio.currentTime property</p>
+                            <p class="text-purple-200 mb-3">• Directly seeks to new position</p>
+                            <p class="text-purple-200">• Instant response</p>
+                            
+                            <h4 class="text-amber-300 font-medium mb-2 mt-4">For Text-to-Speech:</h4>
+                            <p class="text-purple-200 mb-3">• Calculates word position based on time</p>
+                            <p class="text-purple-200 mb-3">• Cancels current speech</p>
+                            <p class="text-purple-200 mb-3">• Starts from new word position</p>
+                            <p class="text-purple-200">• Maintains voice settings</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Download Functionality:</h3>
+                        <div class="bg-slate-700/50 rounded p-4 text-sm">
+                            <h4 class="text-amber-300 font-medium mb-2">Method 1 - Audio Recording:</h4>
+                            <p class="text-purple-200 mb-3">• Uses MediaRecorder API</p>
+                            <p class="text-purple-200 mb-3">• Records TTS audio in real-time</p>
+                            <p class="text-purple-200 mb-3">• Saves as WAV file</p>
+                            
+                            <h4 class="text-amber-300 font-medium mb-2 mt-4">Method 2 - Text Fallback:</h4>
+                            <p class="text-purple-200 mb-3">• Downloads formatted text file</p>
+                            <p class="text-purple-200 mb-3">• Includes voice settings</p>
+                            <p class="text-purple-200">• Can be used with external TTS</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testing Instructions -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">🧪 How to Test the Fixes</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Skip Buttons Test:</h3>
+                        <ol class="space-y-2 text-purple-200 text-sm">
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">1.</span>
+                                <span>Go to Generator tab in EchoVerse</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">2.</span>
+                                <span>Enter a long text (100+ words)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">3.</span>
+                                <span>Generate audiobook and start playback</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">4.</span>
+                                <span>Click skip forward (⏭️) button</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">5.</span>
+                                <span>Watch loading spinner and repositioning</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">6.</span>
+                                <span>Click skip backward (⏮️) button</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">7.</span>
+                                <span>Verify speech continues from new position</span>
+                            </li>
+                        </ol>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-white">Download Button Test:</h3>
+                        <ol class="space-y-2 text-purple-200 text-sm">
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">1.</span>
+                                <span>Generate audiobook with text-to-speech</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">2.</span>
+                                <span>Click download button (📥)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">3.</span>
+                                <span>Watch "Recording audio..." message</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">4.</span>
+                                <span>Wait for TTS to complete</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">5.</span>
+                                <span>Check Downloads folder for WAV file</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-purple-400 font-bold">6.</span>
+                                <span>If recording fails, check for text file</span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expected Behavior -->
+            <section class="bg-slate-800/50 rounded-lg p-6 backdrop-blur-sm border border-purple-500/20">
+                <h2 class="text-2xl font-semibold mb-4 text-purple-300">🎯 Expected Behavior</h2>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2 flex items-center gap-2">
+                            <span class="text-green-400">⏭️</span>
+                            Skip Forward
+                        </h3>
+                        <ul class="text-purple-200 text-sm space-y-1">
+                            <li>• Shows loading spinner</li>
+                            <li>• Cancels current speech</li>
+                            <li>• Jumps ~10 seconds ahead</li>
+                            <li>• Resumes from new position</li>
+                            <li>• Maintains voice settings</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2 flex items-center gap-2">
+                            <span class="text-blue-400">⏮️</span>
+                            Skip Backward
+                        </h3>
+                        <ul class="text-purple-200 text-sm space-y-1">
+                            <li>• Shows loading spinner</li>
+                            <li>• Cancels current speech</li>
+                            <li>• Jumps ~10 seconds back</li>
+                            <li>• Resumes from earlier position</li>
+                            <li>• Smooth transition</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-700/50 rounded-lg p-4">
+                        <h3 class="text-white font-semibold mb-2 flex items-center gap-2">
+                            <span class="text-purple-400">📥</span>
+                            Download
+                        </h3>
+                        <ul class="text-purple-200 text-sm space-y-1">
+                            <li>• Shows recording message</li>
+                            <li>• Records TTS audio</li>
+                            <li>• Downloads WAV file</li>
+                            <li>• Fallback to text file</li>
+                            <li>• Includes metadata</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Access -->
+            <section class="bg-green-900/20 border border-green-500/30 rounded-lg p-6">
+                <h2 class="text-2xl font-semibold mb-4 text-green-300">🚀 Test the Fixes Now</h2>
+                
+                <div class="text-center space-y-4">
+                    <a href="http://localhost:3001" target="_blank" class="inline-block bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors">
+                        🎵 Open EchoVerse App
+                    </a>
+                    <p class="text-green-200">Test the fixed skip buttons and download functionality!</p>
+                </div>
+                
+                <div class="mt-6 p-4 bg-green-900/30 rounded-lg">
+                    <h3 class="text-green-300 font-semibold mb-2">✅ All Controls Now Working!</h3>
+                    <ul class="text-green-200 text-sm space-y-1">
+                        <li>• ⏮️ Skip backward button works for both audio and TTS</li>
+                        <li>• ⏭️ Skip forward button works for both audio and TTS</li>
+                        <li>• 📥 Download button records TTS audio or downloads text</li>
+                        <li>• 🔄 Visual feedback with loading states and status messages</li>
+                        <li>• 🛡️ Error handling and graceful fallbacks</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
